@@ -43,6 +43,29 @@ class CommunityModelAPIView(APIView):
         return Response({'error': 'Группа не удовлетворяет условиям'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PK_CommunityModelAPIView(APIView):
+    def get(self, request, pk):
+        try:
+            community_model = CommunityModel.objects.get(pk=pk)
+            serializer = CommunityModelSerializer(community_model)
+            return Response(serializer.data)
+        except CommunityModel.DoesNotExist:
+            return Response(status=404)
+    
+    def patch(self, request, pk):
+        try:
+            community_model = CommunityModel.objects.get(pk=pk)
+            serializer = CommunityModelSerializer(community_model, data=request.data, partial=True)
+            print(request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+
+            return Response(serializer.data)
+        except CommunityModel.DoesNotExist:
+            return Response(status=404)
+
+# настройки сообществ
 class CommunitySettingAPIView(APIView):
     def get(self, request):
         setting_model = CommunitySetting.objects.all()

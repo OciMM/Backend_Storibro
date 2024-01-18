@@ -23,6 +23,7 @@ def check_link_in_community(community_name, link_to_check):
                 if link_to_check in lst:
                     link_found = True
 
+            print(f"Успешно найдена специальная ссылка в группе")
             return link_found
         else:
             return False

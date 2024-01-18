@@ -11,6 +11,18 @@ class TypeButton(models.Model):
         verbose_name_plural = "Кнопки"
 
 
+class StatusCreative(models.Model):
+    status = models.CharField(max_length=100, verbose_name="Статус проверки")
+
+    def __str__(self):
+        return self.status
+    
+    class Meta:
+        verbose_name = "Статус проверки креатива"
+        verbose_name_plural = "Статусы проверки креативов"
+
+
+# дальше идут модели креативов
 class AddSingleCreative(models.Model):
     button = models.ForeignKey(
         TypeButton,
@@ -21,6 +33,12 @@ class AddSingleCreative(models.Model):
     link = models.CharField(max_length=500, verbose_name="Ссылка")
     name = models.CharField(max_length=200, verbose_name="Название")
 
+    status = models.ForeignKey(
+        StatusCreative,
+        on_delete=models.PROTECT, 
+        default=1,
+        verbose_name="Статус проверки")
+    
     def __str__(self):
         return self.name
     
@@ -44,6 +62,12 @@ class AddDoubleCreative(models.Model):
     second_link = models.CharField(max_length=500, verbose_name="Вторая ссылка")
     second_name = models.CharField(max_length=200, verbose_name="Второе название")
 
+    status = models.ForeignKey(
+        StatusCreative,
+        on_delete=models.PROTECT, 
+        default=1,
+        verbose_name="Статус проверки")
+
     def __str__(self):
         return self.first_name
     
@@ -55,6 +79,12 @@ class AddDoubleCreative(models.Model):
 class RepostCreative(models.Model):
     link_of_story = models.CharField(max_length=150, verbose_name="Ссылка на историю")
     name = models.CharField(max_length=150, verbose_name="Название")
+
+    status = models.ForeignKey(
+        StatusCreative,
+        on_delete=models.PROTECT, 
+        default=1,
+        verbose_name="Статус проверки")
 
     def __str__(self):
         return self.name
@@ -68,6 +98,12 @@ class StickerCreative(models.Model):
     link_of_story = models.CharField(max_length=150, verbose_name="Ссылка на историю")
     name = models.CharField(max_length=150, verbose_name="Название")
 
+    status = models.ForeignKey(
+        StatusCreative,
+        on_delete=models.PROTECT, 
+        default=1,
+        verbose_name="Статус проверки")
+
     def __str__(self):
         return self.name
     
@@ -80,6 +116,12 @@ class DoubleStickerCreative(models.Model):
     link_of_story_first = models.CharField(max_length=150, verbose_name="Ссылка на историю №1")
     link_of_story_second = models.CharField(max_length=150, verbose_name="Ссылка на историю №2")
     name = models.CharField(max_length=150, verbose_name="Название")
+
+    status = models.ForeignKey(
+        StatusCreative,
+        on_delete=models.PROTECT, 
+        default=1,
+        verbose_name="Статус проверки")
 
     def __str__(self):
         return self.name

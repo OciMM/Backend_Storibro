@@ -34,6 +34,31 @@ class CreativeModelAPIView(APIView):
             else:
                 # Если нет мест, возвращаем ошибку
                 return Response({"error": "Нет свободных мест для бронирования"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ImportPKCreativeModelAPIView(APIView):
+    def get(self, request, pk):
+        pk_creative_model = CreativeModel.objects.get(pk=pk)
+        serializer = CreativeModelSerializer(pk_creative_model)
+        return Response(serializer.data)
+    
+    def patch(self, request, pk):
+        # Получаем объект по указанному pk
+        try:
+            instance = CreativeModel.objects.get(pk=pk)
+        except CreativeModel.DoesNotExist:
+            return Response({'error': 'Object not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Инициализируем сериализатор с экземпляром объекта и данными из запроса
+        serializer = CreativeModelSerializer(instance, data=request.data, partial=True)
+
+        # Проверяем, что данные валидны
+        if serializer.is_valid():
+            # Сохраняем обновленные данные
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     
 class DateOfReservationAPIView(APIView):
     def get(self, request):

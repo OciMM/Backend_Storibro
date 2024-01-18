@@ -39,6 +39,31 @@ class AddSingleCreativeAPIView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class PK_AddSingleCreativeAPIView(APIView):
+    """Проверка определенного одиночного креатива"""
+    def get(self, request, pk):
+        try:
+            creative_model = AddSingleCreative.objects.get(pk=pk)
+            serializer = AddSingleCreativeSerializer(creative_model)
+            return Response(serializer.data)
+        except AddSingleCreative.DoesNotExist:
+            return Response(status=404)
+
+    def patch(self, request, pk):
+        try:
+            creatives_model = AddSingleCreative.objects.get(pk=pk)
+            serializer = AddSingleCreativeSerializer(creatives_model, data=request.data, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+
+            return Response(serializer.data)
+        except AddSingleCreative.DoesNotExist:
+            return Response(status=404)
+
+
 class AddDoubleCreativeAPIView(APIView):
     """Двойные креативы и их проверка"""
     def get(self, request):
@@ -75,6 +100,30 @@ class AddDoubleCreativeAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PK_AddDoubleCreativeAPIView(APIView):
+    """Проверка определенного двойного креатива"""
+    def get(self, request, pk):
+        try:
+            creative_model = AddDoubleCreative.objects.get(pk=pk)
+            serializer = AddDoubleCreativeSerializer(creative_model)
+            return Response(serializer.data)
+        except AddDoubleCreative.DoesNotExist:
+            return Response(status=404)
+        
+    def patch(self, request, pk):
+        try:
+            creatives_model = AddDoubleCreative.objects.get(pk=pk)
+            serializer = AddDoubleCreativeSerializer(creatives_model, data=request.data, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+
+            return Response(serializer.data)
+        except AddDoubleCreative.DoesNotExist:
+            return Response(status=404)
+
+
 class RepostCreativeAPIView(APIView):
     """Репосты и их проверка"""
     def get(self, request):
@@ -100,6 +149,30 @@ class RepostCreativeAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
+class PK_RepostCreativeAPIView(APIView):
+    """Проверка определенного репоста"""
+    def get(self, request, pk):
+        try:
+            creative_model = RepostCreative.objects.get(pk=pk)
+            serializer = RepostCreativeSerializer(creative_model)
+            return Response(serializer.data)
+        except RepostCreative.DoesNotExist:
+            return Response(status=404)
+        
+    def patch(self, request, pk):
+        try:
+            creatives_model = RepostCreative.objects.get(pk=pk)
+            serializer = RepostCreativeSerializer(creatives_model, data=request.data, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+
+            return Response(serializer.data)
+        except RepostCreative.DoesNotExist:
+            return Response(status=404)
+
+
 class StickerCreativeAPIView(APIView):
     """Ссылки-стикеры и их проверка"""
     def get(self, request):
@@ -123,7 +196,31 @@ class StickerCreativeAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+class PK_StickerCreativeAPIView(APIView):
+    """Проверка определенной ссылки-стикера"""
+    def get(self, request, pk):
+        try:
+            creative_model = StickerCreative.objects.get(pk=pk)
+            serializer = StickerCreativeSerializer(creative_model)
+            return Response(serializer.data)
+        except StickerCreative.DoesNotExist:
+            return Response(status=404)
+        
+    def patch(self, request, pk):
+        try:
+            creatives_model = StickerCreative.objects.get(pk=pk)
+            serializer = StickerCreativeSerializer(creatives_model, data=request.data, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+
+            return Response(serializer.data)
+        except StickerCreative.DoesNotExist:
+            return Response(status=404)
+
 
 class DoubleStickerCreativeAPIView(APIView):
     """Двойные ссылки-стикеры и их проверка"""
@@ -151,4 +248,57 @@ class DoubleStickerCreativeAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PK_DoubleStickerCreativeAPIView(APIView):
+    """Проверка определенной двойной ссылки-стикера"""
+    def get(self, request, pk):
+        try:
+            creative_model = DoubleStickerCreative.objects.get(pk=pk)
+            serializer = DoubleStickerCreativeSerializer(creative_model)
+            return Response(serializer.data)
+        except DoubleStickerCreative.DoesNotExist:
+            return Response(status=404)
     
+    def patch(self, request, pk):
+        try:
+            creatives_model = DoubleStickerCreative.objects.get(pk=pk)
+            serializer = DoubleStickerCreativeSerializer(creatives_model, data=request.data, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+
+            return Response(serializer.data)
+        except DoubleStickerCreative.DoesNotExist:
+            return Response(status=404)
+
+
+class AllCreativesAPIView(APIView):
+    """Эндпоинт для объединения данных из разных сериализаторов"""
+
+    def get(self, request):
+        single_creative_model = AddSingleCreative.objects.all()
+        single_creative_serializer = AddSingleCreativeSerializer(single_creative_model, many=True).data
+
+        double_creative_model = AddDoubleCreative.objects.all()
+        double_creative_serializer = AddDoubleCreativeSerializer(double_creative_model, many=True).data
+
+        repost_model = RepostCreative.objects.all()
+        repost_serializer = RepostCreativeSerializer(repost_model, many=True).data
+
+        sticker_model = StickerCreative.objects.all()
+        sticker_serializer = StickerCreativeSerializer(sticker_model, many=True).data
+
+        double_sticker_model = DoubleStickerCreative.objects.all()
+        double_sticker_serializer = DoubleStickerCreativeSerializer(double_sticker_model, many=True).data
+
+        combined_data = {
+            'single_creative': single_creative_serializer,
+            'double_creative': double_creative_serializer,
+            'repost': repost_serializer,
+            'sticker': sticker_serializer,
+            'double_sticker': double_sticker_serializer
+        }
+
+        return Response(combined_data)

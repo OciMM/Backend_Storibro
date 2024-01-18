@@ -8,10 +8,6 @@ from .services import check_link_in_community
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-import schedule
-import time
-from random import randint
-from datetime import datetime, timedelta
 
 class UserModelAPIView(ListAPIView):
     queryset = UserModel.objects.all()
@@ -44,8 +40,6 @@ class UpdatePublicModelStatusAPIView(APIView):
 
             public_model.save()
             serializer = PublicModelSerializer(public_model)
-
-            # schedule_random_patch()
 
             return Response(serializer.data)
         except PublicModel.DoesNotExist:

@@ -1,10 +1,28 @@
 from django.db import models
 
 
+class StatusCommunities(models.Model):
+    status = models.CharField(max_length=100, verbose_name="Статус проверки")
+
+    def __str__(self):
+        return self.status
+    
+    class Meta:
+        verbose_name = "Статус проверки сообщества"
+        verbose_name_plural = "Статусы проверки сообществ"
+
+
 class CommunityModel(models.Model):
     name = models.CharField(max_length=150, verbose_name="Имя сообщества")
     photo = models.URLField(verbose_name="Ссылка аватарки") # потом надо поменять на FileField
     url = models.URLField(verbose_name="Ссылка сообщества")
+
+    status_of_check = models.ForeignKey(
+        StatusCommunities,
+        on_delete=models.PROTECT,
+        default=1,
+        verbose_name="Статус"
+    )
 
     def __str__(self):
         return self.name
@@ -36,3 +54,4 @@ class CommunitySetting(models.Model):
     class Meta:
         verbose_name = "Настройки сообщества"
         verbose_name_plural = "Настройки сообществ"
+
