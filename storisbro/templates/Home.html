@@ -1,0 +1,21 @@
+<!-- CodeLogin_app/templates/home.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h3>Welcome {{ user.username }} !!!</h3>
+        <br/><br/>
+    {% else %}
+        <div class="social">
+            <ul>
+                <li class="facebook">
+                    <a href="{% url 'authentication:social:begin' 'vk-oauth2' %}">Войти через ВКонтакте</a>
+                        Sign in with VK
+                    </a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+
+{% endblock content %}
