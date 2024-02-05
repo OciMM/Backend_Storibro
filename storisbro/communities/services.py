@@ -19,8 +19,8 @@ def add_new_community_of_link(url):
 
         group_name = group_info[0]['name']
         group_photo = group_info[0]['photo_50']
-
-        if group_members_info >= 20000:
+        # с 1 надо будет поменять на 20к
+        if group_members_info >= 1:
             name = group_name
             photo = group_photo
             return {'name': name, 'photo': photo}

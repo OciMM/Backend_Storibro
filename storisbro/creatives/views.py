@@ -94,6 +94,13 @@ class AddDoubleCreativeAPIView(APIView):
 
         serializer = AddDoubleCreativeSerializer(data=other_data)
         if serializer.is_valid():
+
+            file = request.data.get('file')
+
+            # Проверка размера файла
+            if not check_size_file(file.temporary_file_path()):
+                return Response({"error": "Размер файла слишком большой."}, status=status.HTTP_400_BAD_REQUEST)
+            
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -194,7 +201,7 @@ class StickerCreativeAPIView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+ 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

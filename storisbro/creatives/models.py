@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+
 
 class TypeButton(models.Model):
     name_button = models.CharField(max_length=100, verbose_name="Тип кнопки")
@@ -24,12 +26,13 @@ class StatusCreative(models.Model):
 
 # дальше идут модели креативов
 class AddSingleCreative(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     button = models.ForeignKey(
         TypeButton,
         on_delete=models.CASCADE,
         verbose_name="Тип кнопки"
         )
-    # file = models.FileField(verbose_name="Файл для креатива", upload_to='files')
+    file = models.FileField(verbose_name="Файл для креатива", upload_to='files', null=True)
     link = models.CharField(max_length=500, verbose_name="Ссылка")
     name = models.CharField(max_length=200, verbose_name="Название")
 
@@ -48,17 +51,18 @@ class AddSingleCreative(models.Model):
 
 
 class AddDoubleCreative(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     button = models.ForeignKey(
         TypeButton,
         on_delete=models.CASCADE,
         verbose_name="Тип кнопки"
         )
     
-    # first_file = models.FileField(verbose_name="Первый файл для креатива", upload_to='files')
+    first_file = models.FileField(verbose_name="Первый файл для креатива", upload_to='files', null=True)
     first_link = models.CharField(max_length=500, verbose_name="Первая ссылка")
     first_name = models.CharField(max_length=200, verbose_name="Первое название")
 
-    # second_file = models.FileField(verbose_name="Второй файл для креатива", upload_to='files')
+    second_file = models.FileField(verbose_name="Второй файл для креатива", upload_to='files', null=True)
     second_link = models.CharField(max_length=500, verbose_name="Вторая ссылка")
     second_name = models.CharField(max_length=200, verbose_name="Второе название")
 
@@ -77,6 +81,7 @@ class AddDoubleCreative(models.Model):
 
 
 class RepostCreative(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     link_of_story = models.CharField(max_length=150, verbose_name="Ссылка на историю")
     name = models.CharField(max_length=150, verbose_name="Название")
 
@@ -95,6 +100,7 @@ class RepostCreative(models.Model):
 
 
 class StickerCreative(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     link_of_story = models.CharField(max_length=150, verbose_name="Ссылка на историю")
     name = models.CharField(max_length=150, verbose_name="Название")
 
@@ -113,6 +119,7 @@ class StickerCreative(models.Model):
 
 
 class DoubleStickerCreative(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     link_of_story_first = models.CharField(max_length=150, verbose_name="Ссылка на историю №1")
     link_of_story_second = models.CharField(max_length=150, verbose_name="Ссылка на историю №2")
     name = models.CharField(max_length=150, verbose_name="Название")

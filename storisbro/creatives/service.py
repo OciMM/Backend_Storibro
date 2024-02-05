@@ -43,25 +43,21 @@ def check_link_for_story(url):
     
 # проверка веса файла
 # Конвертировать байты в мегабайты
-def convert_to_megabytes(size_bytes): 
+def convert_to_megabytes(size_bytes):
     return size_bytes / (1024 * 1024)
 
-
 def check_size_file(file):
-    if os.path.isfile(file):
-        file_size = os.path.getsize(file)
+    if file:
+        file_size = file.size
         size_in_mb = convert_to_megabytes(file_size)
         print(f"Размер файла: {size_in_mb:.2f} МБ")
-        
-        
-        if size_in_mb <= 10 and size_in_mb > 0:
+
+        if 0 < size_in_mb <= 10:
             print("Файл подходит по весу!")
             return True
-
         else:
             print("Размер слишком большой, нужен файл меньше или возникла другая ошибка.")
             return False
-
     else:
         return "Файл не найден"
     

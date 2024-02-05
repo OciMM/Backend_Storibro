@@ -13,7 +13,7 @@ class DateOfReservation(models.Model):
     def __str__(self):
         return f"{self.date} - {self.count_room} свободных мест"    
 
-
+ 
 # Тестовая модель креатива
 class CreativeModel(models.Model):
     date = models.ForeignKey(

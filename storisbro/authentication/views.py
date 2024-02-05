@@ -15,6 +15,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
 import redis
+from django.contrib.auth.views import LoginView
+from rest_framework.authentication import TokenAuthentication
+from rest_framework import exceptions
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .models import User
 from .serializers import UserLoginSerializer, UserProfileSerializer, UserCreateSerializer
@@ -48,10 +52,19 @@ class ObtainTokenView(TokenObtainPairView):
 class UserProfileAPIView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [permissions.IsAuthenticated] 
+    # permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    # def get(self, request, *args, **kwargs):
+    #     token = request.auth
+    #     print(f"Received token: {token}")
+    #     return Response({"message": "Your response message"}, status=status.HTTP_200_OK)
 
     def get_object(self):
-        return self.request.user
+        if self.request.user.is_authenticated:
+            return self.request.user
+        else:
+            raise exceptions.NotAuthenticated("User is not authenticated.")
 
     def perform_update(self, serializer):
         instance = serializer.save()
@@ -82,6 +95,31 @@ def activate_account(request, user_id, confirmation_code):
 
     if stored_code.decode('utf-8') == confirmation_code:
         user.is_active = True
+        user.save()
+        redis_connection.delete(f"confirmation_code:{user.id}")
+        return JsonResponse({'message': 'Аккаунт успешно активирован.'}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({'error': 'Неверный код подтверждения.'}, status=status.HTTP_401_UNAUTHORIZED) 
+    
+
+@csrf_exempt
+def confirmation_login(user):
+    confirmation_code = secrets.token_urlsafe(6)
+    redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+    redis_connection.set(f"confirmation_code:{user.id}", confirmation_code)
+
+    user_created.delay(user.id, confirmation_code)
+
+
+@csrf_exempt
+def activate_logged_in_with_new_device(request, user_id, confirmation_code):
+    user = get_object_or_404(User, id=user_id)
+
+    redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+    stored_code = redis_connection.get(f"confirmation_code:{user.id}")
+
+    if stored_code.decode('utf-8') == confirmation_code:
+        user.logged_in_with_new_device = True
         user.save()
         redis_connection.delete(f"confirmation_code:{user.id}")
         return JsonResponse({'message': 'Аккаунт успешно активирован.'}, status=status.HTTP_200_OK)

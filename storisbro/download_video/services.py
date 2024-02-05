@@ -4,58 +4,17 @@ from telegram import Bot
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 from telegram.ext import MessageHandler, filters
+import requests
+from moviepy.editor import VideoFileClip
+import io
+
+import vk_api
+from vk_api.utils import get_random_id
 
 TOKEN = ''
 CHANNEL_USERNAME = ''
-
-def get_latest_video(update: Update, context: CallbackContext) -> None:
-    try:
-        user_channel = context.args[0] if context.args else CHANNEL_USERNAME
-
-        bot = context.bot
-
-        # Получаем последнее сообщение
-        messages = bot.get_chat_history(chat_id=user_channel, limit=1)
-        latest_message = messages[0]
-
-        # Проверяем, является ли последнее сообщение видео
-        if latest_message.media_group and latest_message.media_group[0].document.mime_type == 'video/mp4':
-            video_file = latest_message.media_group[0].document.file_id
-
-            # Получаем видео N+155
-            n_plus_155_index = min(len(messages), 155)  # Обеспечиваем, чтобы не выйти за границы
-            video_n_plus_155 = messages[n_plus_155_index - 1].media_group[0].document.file_id
-
-            # Выполняем необходимые действия с video_file и video_n_plus_155 
-            # ...
-
-        else:
-            # Обрабатываем случай, когда последнее сообщение не является видео
-            update.message.reply_text("Последнее сообщение не является видео.")
-
-    except Exception as e:
-        # Обрабатываем исключения
-        update.message.reply_text(f"Произошла ошибка: {str(e)}")
-
-def main() -> None:
-    updater = Updater(token=TOKEN)
-    dispatcher = updater.dispatcher
-
-    dispatcher.add_handler(CommandHandler("get_latest_video", get_latest_video, pass_args=True))
-
-    updater.start_polling()
-    updater.idle()
-
-# if __name__ == '__main__':
-#     main()
-
-
-# из файла bot.py
-import requests
-import vk_api
-from vk_api.utils import get_random_id
-from moviepy.editor import VideoFileClip
-import io
+GROUP_ID = ''  # Добавьте group_id из вашего VK-приложения
+VK_ACCESS_TOKEN = ''  # Добавьте access_token из вашего VK-приложения
 
 v = '5.199'
 group_id = ''  
@@ -104,6 +63,56 @@ link_text = [
 #play — Слушать.
 #install — Установить.
 #read — Читать.
+
+
+def get_latest_video(update: Update, context: CallbackContext) -> None:
+    try:
+        user_channel = context.args[0] if context.args else CHANNEL_USERNAME
+
+        bot = context.bot
+
+        # Получаем последнее сообщение
+        messages = bot.get_chat_history(chat_id=user_channel, limit=1)
+        latest_message = messages[0]
+
+        # Проверяем, является ли последнее сообщение видео
+        if latest_message.media_group and latest_message.media_group[0].document.mime_type == 'video/mp4':
+            video_file_id = latest_message.media_group[0].document.file_id
+
+            # Скачиваем видео
+            file_path = bot.get_file(video_file_id).file_path
+            video_url = f'https://api.telegram.org/file/bot{TOKEN}/{file_path}'
+            response = requests.get(video_url)
+
+            if response.status_code == 200:
+                video_data = response.content
+
+                # Загружаем видео в VK Stories
+                upload_url = first()
+                if upload_url:
+                    files = {'file': ('video.mp4', io.BytesIO(video_data))}
+                    response = requests.post(upload_url, files=files)
+                    if response.status_code == 200:
+                        data = response.json()
+                        upload_result = data['response'].get('upload_result')
+                        # Сохраняем видео в VK Stories
+                        save_to_vk_stories(upload_result)
+                    else:
+                        update.message.reply_text("Ошибка при загрузке видео в VK Stories.")
+                else:
+                    update.message.reply_text("Ошибка получения upload_url.")
+
+            else:
+                update.message.reply_text("Ошибка при скачивании видео из Telegram.")
+
+        else:
+            # Обрабатываем случай, когда последнее сообщение не является видео
+            update.message.reply_text("Последнее сообщение не является видео.")
+
+    except Exception as e:
+        # Обрабатываем исключения
+        update.message.reply_text(f"Произошла ошибка: {str(e)}")
+
 def first():
     global upload_url  
     url = 'https://api.vk.com/method/stories.getVideoUploadServer'
@@ -124,34 +133,13 @@ def first():
         upload_url = data['response']['upload_url']
         return upload_url
 
-def second():
-    global upload_result  
-
-    files = {
-        'file': ('video.mp4', open('', 'rb'))  #нужно сделать, чтобы грузило загруженный видос
-    }
-    video_clip = VideoFileClip(io.BytesIO(files))
-    duration = video_clip.duration
-    aspect_ratio = video_clip.size[0] / video_clip.size[1]
-    video_clip.close()
-
-    if duration > 15 or aspect_ratio != 9 / 16:
-        print('Неверная длительность или соотношение сторон видео. Загрузка отменена.')
-        return
-    response = requests.post(upload_url, files=files)
-
-    if response.status_code == 200:
-        data = response.json()
-        upload_result = data['response'].get('upload_result')
-        return upload_result
-
-def third():
+def save_to_vk_stories(upload_result):
     url = 'https://api.vk.com/method/stories.save'
 
     params = {
-        'access_token': access_token,
+        'access_token': VK_ACCESS_TOKEN,
         'upload_results': upload_result,
-        'v': v,
+        'v': '5.199',
     }
 
     response = requests.post(url, params=params)
@@ -160,11 +148,56 @@ def third():
         data = response.json()
         print(data)
 
+def main() -> None:
+    updater = Updater(token=TOKEN)
+    dispatcher = updater.dispatcher
 
-# if __name__ == '__main__':
-#     first()
-#     second()
-#     third()
+    dispatcher.add_handler(CommandHandler("get_latest_video", get_latest_video, pass_args=True))
+
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
+
+# из файла bot.py
+
+
+# def second():
+#     global upload_result  
+
+#     files = {
+#         'file': ('video.mp4', open('', 'rb'))  #нужно сделать, чтобы грузило загруженный видос
+#     }
+#     video_clip = VideoFileClip(io.BytesIO(files))
+#     duration = video_clip.duration
+#     aspect_ratio = video_clip.size[0] / video_clip.size[1]
+#     video_clip.close()
+
+#     if duration > 15 or aspect_ratio != 9 / 16:
+#         print('Неверная длительность или соотношение сторон видео. Загрузка отменена.')
+#         return
+#     response = requests.post(upload_url, files=files)
+
+#     if response.status_code == 200:
+#         data = response.json()
+#         upload_result = data['response'].get('upload_result')
+#         return upload_result
+
+# def third():
+#     url = 'https://api.vk.com/method/stories.save'
+
+#     params = {
+#         'access_token': access_token,
+#         'upload_results': upload_result,
+#         'v': v,
+#     }
+
+#     response = requests.post(url, params=params)
+
+#     if response.status_code == 200:
+#         data = response.json()
+#         print(data)
 
 
 # из файла stats.py

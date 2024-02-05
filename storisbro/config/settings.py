@@ -64,7 +64,6 @@ INSTALLED_APPS = [
     'creatives.apps.CreativesConfig',
     'download_video.apps.DownloadVideoConfig',
     'reservation.apps.ReservationConfig',
-    'user_test.apps.UserTestConfig',
     'content.apps.ContentConfig',
 ]
 
@@ -106,9 +105,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Storisbro_db',
-        'USER': 'Storisbro_login',
-        'PASSWORD': 'A5Atekh9fdHFuFc8e8B',
+        'NAME': 'Storisbro_back_db',
+        'USER': 'storisbro_back_login',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': 5432
     }
@@ -161,6 +160,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    
+    
 }
 
 SIMPLE_JWT = {
@@ -168,6 +169,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),  # Время жизни refresh token
     'SLIDING_TOKEN_LIFETIME': timedelta(days=7),  # Время жизни sliding token
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=14),  # Время жизни refresh sliding token
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 SPECTACULAR_SETTINGS = {

@@ -2,6 +2,10 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.models import AnonymousUser
+from rest_framework_simplejwt.tokens import AccessToken
 
 from .models import CommunityModel, Setting, CommunitySetting
 from .serializers import CommunityModelSerializer, CommunitySettingSerializer
@@ -24,9 +28,9 @@ class CommunityModelAPIView(APIView):
         community_data = add_new_community_of_link(url)
         if community_data:
             name = community_data['name']
-            photo = community_data['photo']
-
-            community = CommunityModel.objects.create(name=name, photo=photo, url=url)
+            # photo = community_data['photo']
+            user = request.user #if request.user.is_authenticated else None
+            community = CommunityModel.objects.create(user=user, name=name, url=url)
             serializer = CommunityModelSerializer(community)
 
             setting = Setting.objects.first()

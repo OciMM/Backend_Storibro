@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import UserModel, PublicModel
+# from .models import PublicModel
 
-admin.site.register(UserModel)
-admin.site.register(PublicModel)
+# admin.site.register(PublicModel)

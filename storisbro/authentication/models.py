@@ -26,7 +26,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     groups = models.ManyToManyField(Group, related_name='users')
     user_permissions = models.ManyToManyField(Permission, related_name='users')
+    logged_in_with_new_device = models.BooleanField(default=False)
+    status_commission = models.BooleanField(default=False, verbose_name="Статус пониженной комиссии")
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'email' 
