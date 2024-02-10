@@ -6,11 +6,21 @@ from rest_framework import status
 from .models import AddSingleCreative, AddDoubleCreative, RepostCreative, StickerCreative, DoubleStickerCreative
 from .serializers import AddSingleCreativeSerializer, AddDoubleCreativeSerializer, \
     RepostCreativeSerializer, StickerCreativeSerializer, DoubleStickerCreativeSerializer
+from reservation.models import DateOfReservation
 
 from .service import check_link_for_story, check_size_file, check_is_story
+from django.db import transaction
+import logging
+
+# Настройка логгера
+logging.basicConfig(level=logging.DEBUG)  # Установите уровень логгирования по вашему усмотрению
+
+# Получение логгера для текущего модуля
+logger = logging.getLogger(__name__)
 
 class AddSingleCreativeAPIView(APIView):
     """Одиночный креатив и его проверка"""
+    
     def get(self, request):
         creative_model = AddSingleCreative.objects.all()
         serializer = AddSingleCreativeSerializer(creative_model, many=True)
@@ -31,13 +41,25 @@ class AddSingleCreativeAPIView(APIView):
 
         # Дополните данные 'link' после проверки
         other_data['link'] = checked_link
-
+        print(other_data['file'])
         serializer = AddSingleCreativeSerializer(data=other_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def patch(self, request, pk):
+        try:
+            creative_model = AddSingleCreative.objects.get(pk=pk)
+            serializer = AddSingleCreativeSerializer(creative_model, data=request.data, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except AddSingleCreative.DoesNotExist:
+            return Response(status=404)
 
 
 class PK_AddSingleCreativeAPIView(APIView):
@@ -300,12 +322,97 @@ class AllCreativesAPIView(APIView):
         double_sticker_model = DoubleStickerCreative.objects.all()
         double_sticker_serializer = DoubleStickerCreativeSerializer(double_sticker_model, many=True).data
 
-        combined_data = {
-            'single_creative': single_creative_serializer,
-            'double_creative': double_creative_serializer,
-            'repost': repost_serializer,
-            'sticker': sticker_serializer,
-            'double_sticker': double_sticker_serializer
-        }
+        combined_data = []
+
+        combined_data.extend(single_creative_serializer)
+        combined_data.extend(double_creative_serializer)
+        combined_data.extend(repost_serializer)
+        combined_data.extend(sticker_serializer)
+        combined_data.extend(double_sticker_serializer)
 
         return Response(combined_data)
+
+    def patch(self, request):
+        data = request.data
+        saved_creatives = []
+        errors = []
+        logger.debug("Starting patch method...")
+        if isinstance(data, list):
+            for item in data:
+                if isinstance(item, dict):
+                    creative_type = item.get('creative_type')
+
+                    if creative_type == 'AddSingleCreative':
+                        try:
+                            pk = item.get('id')
+                            creative_model = AddSingleCreative.objects.get(pk=pk)
+                            serializer = AddSingleCreativeSerializer(creative_model, data=item, partial=True)
+                            
+                            # Обработка ManyToManyField 'reservation'
+                            reservation_data = item.get('reservation', [])
+                            if reservation_data:
+                                reservation_objects = []
+                                for reservation_id in reservation_data:
+                                    reservation_object = DateOfReservation.objects.get(id=id)
+                                    reservation_objects.append(reservation_object)
+                                serializer.validated_data['reservation'] = reservation_objects
+
+                            if serializer.is_valid():
+                                serializer.save()
+                                saved_creatives.append(serializer.data)
+                        except AddSingleCreative.DoesNotExist:
+                            pass
+
+                    elif creative_type == 'AddDoubleCreative':
+                        try:
+                            pk = item.get('id')
+                            creative_model = AddDoubleCreative.objects.get(pk=pk)
+                            serializer = AddDoubleCreativeSerializer(creative_model, data=item, partial=True)
+                            if serializer.is_valid():
+                                serializer.save()
+                                saved_creatives.append(serializer.data)
+
+                        except AddDoubleCreative.DoesNotExist:
+                            pass
+
+                    elif creative_type == 'RepostCreative':
+                        try:
+                            pk = item.get('id')
+                            creative_model = RepostCreative.objects.get(pk=pk)
+                            serializer = RepostCreativeSerializer(creative_model, data=item, partial=True)
+                            if serializer.is_valid():
+                                serializer.save()
+                                saved_creatives.append(serializer.data)
+
+                        except RepostCreative.DoesNotExist:
+                            pass
+
+                    elif creative_type == 'StickerCreative':
+                        try:
+                            pk = item.get('id')
+                            creative_model = StickerCreative.objects.get(pk=pk)
+                            serializer = StickerCreativeSerializer(creative_model, data=item, partial=True)
+                            if serializer.is_valid():
+                                serializer.save()
+                                saved_creatives.append(serializer.data)
+
+                        except StickerCreative.DoesNotExist:
+                            pass
+
+                    elif creative_type == 'DoubleStickerCreative':
+                        try:
+                            pk = item.get('id')
+                            creative_model = DoubleStickerCreative.objects.get(pk=pk)
+                            serializer = DoubleStickerCreativeSerializer(creative_model, data=item, partial=True)
+                            if serializer.is_valid():
+                                serializer.save()
+                                saved_creatives.append(serializer.data)
+
+                        except DoubleStickerCreative.DoesNotExist:
+                            pass
+        if errors:
+            logger.error(f"Validation errors: {errors}")
+            return Response({"errors": errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+        logger.debug("Finishing patch method.")
+        return Response({"message": "Креативы успешно обновлены", "saved_creatives": saved_creatives, "item": data})

@@ -9,9 +9,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404  # Добавлено для удобства
 from django.http import JsonResponse
 from rest_framework import status
+from authentication.models import User
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from authentication.models import User  # Убедитесь, что импортирована модель User
+from django.db import transaction
 
 
 # class PublicModelAPIView(ListAPIView):
@@ -56,12 +59,15 @@ def low_commission(request, user_id):
         print(f"Ошибка: {e}")
         return JsonResponse({'message': 'Проверка не прошла'})
 
-# @receiver(post_save, sender=CommunityModel)
-# def update_user_status(sender, instance, **kwargs):
-#     user = instance.user
-#     communities = CommunityModel.objects.filter(user=user)
 
-#     all_community_true = all(community.status_commission for community in communities)
+@receiver(post_save, sender=CommunityModel)
+def update_user_status(sender, instance, **kwargs):
+    user_id = instance.user.id
+    user = User.objects.get(id=user_id)  # Получение объекта пользователя
 
-#     user.status_commission = all_community_true
-#     user.save()
+    communities = CommunityModel.objects.filter(user=user)
+    all_community_true = all(community.status_commission for community in communities)
+
+    with transaction.atomic():
+        user.status_commission = all_community_true
+        user.save()

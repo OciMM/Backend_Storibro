@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DateOfReservation, CreativeModel
+from .models import DateOfReservation
 
 admin.site.register(DateOfReservation)
-admin.site.register(CreativeModel)
+# admin.site.register(CreativeModel)

@@ -24,7 +24,7 @@ from communities.views import CommunityModelAPIView, CommunitySettingAPIView, Up
 from creatives.views import AddSingleCreativeAPIView, AddDoubleCreativeAPIView, RepostCreativeAPIView, \
     StickerCreativeAPIView, DoubleStickerCreativeAPIView, AllCreativesAPIView, PK_AddSingleCreativeAPIView, \
     PK_AddDoubleCreativeAPIView, PK_RepostCreativeAPIView, PK_StickerCreativeAPIView, PK_DoubleStickerCreativeAPIView
-from reservation.views import CreativeModelAPIView, DateOfReservationAPIView, ImportPKCreativeModelAPIView
+from reservation.views import DateOfReservationAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,9 +36,9 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 
-    path('api_reservation/creatives', CreativeModelAPIView.as_view()),
+    # path('api_reservation/creatives', CreativeModelAPIView.as_view()),
     path('api_reservation/reservations', DateOfReservationAPIView.as_view()),
-    path('api_reservation/creatives/<int:pk>', ImportPKCreativeModelAPIView.as_view()),
+    # path('api_reservation/creatives/<int:pk>', ImportPKCreativeModelAPIView.as_view()),
     
     path('api_creatives/add_single_creative', AddSingleCreativeAPIView.as_view()),
     path('api_creatives/add_single_creative/<int:pk>', PK_AddSingleCreativeAPIView.as_view()),
@@ -60,7 +60,6 @@ urlpatterns = [
     path('api_communities/communities/<int:pk>', PK_CommunityModelAPIView.as_view()),
     path('api_communities/communities/community_setting', CommunitySettingAPIView.as_view()),
     path('api_communities/communities/community_setting/<int:pk>', UpdateCommunitySettingAPIView.as_view()),
-    # path('api_commission/publics', PublicModelAPIView.as_view()),
     path('api_communities/communities/check_all/<int:user_id>', low_commission),
     path('api_communities/communities/check/<int:pk>', UpdatePublicModelStatusAPIView.as_view())
 ]

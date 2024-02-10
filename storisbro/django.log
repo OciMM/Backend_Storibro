@@ -1,0 +1,122 @@
+(0.016) SELECT "creatives_addsinglecreative"."id", "creatives_addsinglecreative"."user_id", "creatives_addsinglecreative"."button_id", "creatives_addsinglecreative"."creative_type", "creatives_addsinglecreative"."file", "creatives_addsinglecreative"."link", "creatives_addsinglecreative"."name", "creatives_addsinglecreative"."date", "creatives_addsinglecreative"."status_id" FROM "creatives_addsinglecreative"; args=(); alias=default
+(0.000) SELECT "reservation_dateofreservation"."id", "reservation_dateofreservation"."date", "reservation_dateofreservation"."count_room" FROM "reservation_dateofreservation" INNER JOIN "creatives_addsinglecreative_reservation" ON ("reservation_dateofreservation"."id" = "creatives_addsinglecreative_reservation"."dateofreservation_id") WHERE "creatives_addsinglecreative_reservation"."addsinglecreative_id" = 2; args=(2,); alias=default
+(0.000) SELECT "reservation_dateofreservation"."id", "reservation_dateofreservation"."date", "reservation_dateofreservation"."count_room" FROM "reservation_dateofreservation" INNER JOIN "creatives_addsinglecreative_reservation" ON ("reservation_dateofreservation"."id" = "creatives_addsinglecreative_reservation"."dateofreservation_id") WHERE "creatives_addsinglecreative_reservation"."addsinglecreative_id" = 4; args=(4,); alias=default
+(0.000) SELECT "reservation_dateofreservation"."id", "reservation_dateofreservation"."date", "reservation_dateofreservation"."count_room" FROM "reservation_dateofreservation" INNER JOIN "creatives_addsinglecreative_reservation" ON ("reservation_dateofreservation"."id" = "creatives_addsinglecreative_reservation"."dateofreservation_id") WHERE "creatives_addsinglecreative_reservation"."addsinglecreative_id" = 3; args=(3,); alias=default
+(0.016) SELECT "creatives_adddoublecreative"."id", "creatives_adddoublecreative"."user_id", "creatives_adddoublecreative"."button_id", "creatives_adddoublecreative"."creative_type", "creatives_adddoublecreative"."first_file", "creatives_adddoublecreative"."first_link", "creatives_adddoublecreative"."first_name", "creatives_adddoublecreative"."second_file", "creatives_adddoublecreative"."second_link", "creatives_adddoublecreative"."second_name", "creatives_adddoublecreative"."status_id" FROM "creatives_adddoublecreative"; args=(); alias=default
+(0.000) SELECT "creatives_repostcreative"."id", "creatives_repostcreative"."user_id", "creatives_repostcreative"."creative_type", "creatives_repostcreative"."link_of_story", "creatives_repostcreative"."name", "creatives_repostcreative"."status_id" FROM "creatives_repostcreative"; args=(); alias=default
+(0.000) SELECT "creatives_stickercreative"."id", "creatives_stickercreative"."user_id", "creatives_stickercreative"."creative_type", "creatives_stickercreative"."link_of_story", "creatives_stickercreative"."name", "creatives_stickercreative"."status_id" FROM "creatives_stickercreative"; args=(); alias=default
+(0.000) SELECT "creatives_doublestickercreative"."id", "creatives_doublestickercreative"."user_id", "creatives_doublestickercreative"."creative_type", "creatives_doublestickercreative"."link_of_story_first", "creatives_doublestickercreative"."link_of_story_second", "creatives_doublestickercreative"."name", "creatives_doublestickercreative"."status_id" FROM "creatives_doublestickercreative"; args=(); alias=default
+"GET /api_creatives/all_creatives HTTP/1.1" 200 9062
+"PATCH /api_creatives/all_creatives HTTP/1.1" 200 7342
+File C:\Backend_Storibro\storisbro\config\settings.py previous mtime: 1707460822.4272687, current mtime: 1707461087.8325071
+C:\Backend_Storibro\storisbro\config\settings.py notified as changed. Signal results: [(<function template_changed at 0x000002C0B55B5A80>, None), (<function translation_file_changed at 0x000002C0B6DFF9C0>, None)].
+C:\Backend_Storibro\storisbro\config\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Backend_Storibro\storisbro\config\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Starting patch method...
+Finishing patch method.
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+Starting patch method...
+Finishing patch method.
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+Starting patch method...
+Finishing patch method.
+Internal Server Error: /api_creatives/all_creatives
+Traceback (most recent call last):
+  File "C:\Backend_Storibro\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Backend_Storibro\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Backend_Storibro\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\storisbro\creatives\views.py", line 409, in patch
+    return Response({"message": "Креативы успешно обновлены", "saved_creatives": saved_creatives, "item": item})
+                                                                                                          ^^^^
+UnboundLocalError: cannot access local variable 'item' where it is not associated with a value
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+Starting patch method...
+Finishing patch method.
+Internal Server Error: /api_creatives/all_creatives
+Traceback (most recent call last):
+  File "C:\Backend_Storibro\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Backend_Storibro\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Backend_Storibro\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Backend_Storibro\storisbro\creatives\views.py", line 409, in patch
+    return Response({"message": "Креативы успешно обновлены", "saved_creatives": saved_creatives, "item": creative_type})
+                                                                                                          ^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'creative_type' where it is not associated with a value
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+Starting patch method...
+Finishing patch method.
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+Starting patch method...
+Finishing patch method.
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+Starting patch method...
+Finishing patch method.
+Starting patch method...
+Finishing patch method.
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+Starting patch method...
+Finishing patch method.
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+Starting patch method...
+Finishing patch method.
+Starting patch method...
+Finishing patch method.
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader
+Starting patch method...
+Finishing patch method.
+C:\Backend_Storibro\storisbro\creatives\views.py changed, reloading.
+Watching for file changes with StatReloader

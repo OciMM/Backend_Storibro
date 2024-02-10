@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import AnonymousUser
 from rest_framework_simplejwt.tokens import AccessToken
+from django.conf import settings
+from authentication.models import User
 
 from .models import CommunityModel, Setting, CommunitySetting
 from .serializers import CommunityModelSerializer, CommunitySettingSerializer
@@ -29,7 +31,13 @@ class CommunityModelAPIView(APIView):
         if community_data:
             name = community_data['name']
             # photo = community_data['photo']
-            user = request.user #if request.user.is_authenticated else None
+            user_pk = request.data.get('user')
+            
+            try:
+                user = User.objects.get(pk=int(user_pk))
+            except (User.DoesNotExist, ValueError):
+                return Response({'error': 'Некорректный пользователь'}, status=status.HTTP_400_BAD_REQUEST)
+    
             community = CommunityModel.objects.create(user=user, name=name, url=url)
             serializer = CommunityModelSerializer(community)
 
