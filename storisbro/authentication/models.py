@@ -27,7 +27,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     groups = models.ManyToManyField(Group, related_name='users')
     user_permissions = models.ManyToManyField(Permission, related_name='users')
     logged_in_with_new_device = models.BooleanField(default=False)
+    name = models.CharField(max_length=100, verbose_name='Имя пользователя', blank=True, null=True)
     status_commission = models.BooleanField(default=False, verbose_name="Статус пониженной комиссии")
+    status_owner = models.BooleanField(default=False, verbose_name='Статус владельца')
+    statu_client = models.BooleanField(default=False, verbose_name='Статус заказчика')
+    vk_id = models.CharField(max_length=200, verbose_name='VK id', blank=True, null=True)
+    count_of_visit = models.PositiveIntegerField(default=0, verbose_name='Количество посещений на сайте')
+
+    registration_date = models.DateTimeField(auto_now_add=True, null=True)
+    replenishment_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    withdrawal_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    service_income = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    community_count = models.PositiveIntegerField(default=0)
+    creative_count = models.PositiveIntegerField(default=0)
 
     objects = UserManager()
 

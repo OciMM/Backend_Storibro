@@ -17,7 +17,9 @@ class CommunityModel(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=350, verbose_name="Имя сообщества")
     # photo = models.URLField(verbose_name="Ссылка аватарки", null=True) # потом надо поменять на FileField
+    count_members = models.PositiveIntegerField(verbose_name="Количество подписчиков", null=True)
     url = models.URLField(verbose_name="Ссылка сообщества")
+    date = models.DateTimeField(auto_now_add=True, null=True)
 
     status_of_check = models.ForeignKey(
         StatusCommunities,
@@ -26,12 +28,11 @@ class CommunityModel(models.Model):
         verbose_name="Статус"
     )
 
-    # name_id_commission = models.CharField(max_length=150, verbose_name="ID сообщества", blank=True, null=True)
     status_commission = models.BooleanField(default=False, verbose_name="Статус ссылки")
     url_commission =  models.URLField(
         verbose_name="Ссылка которая должна быть в сообществе", 
         blank=True, 
-        default="https://www.shopify.com/blog/low-investment-business-ideas"
+        default="https://www.shopify.com/blog/low-investment-business-ideas" # поменять на реальную ссылку потом
     )
 
     def __str__(self):

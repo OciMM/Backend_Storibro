@@ -36,6 +36,7 @@ class UserLoginSerializer(TokenObtainPairSerializer):
         data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
         data['id'] = self.user.id  # Добавляем ID пользователя
+        data['count_of_visit'] = self.user.count_of_visit
 
         if not self.user.is_active:
             raise serializers.ValidationError("Аккаунт не активирован.")
@@ -57,5 +58,12 @@ class UserLoginSerializer(TokenObtainPairSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'password')
+        fields = ('email', 'password', 'name')
         # fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+

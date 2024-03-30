@@ -3,9 +3,9 @@ import requests
 
 import os
 
-token = os.environ['TOKEN']
+token = "vk1.a.MaJjbRLRFk8WS_aZNXRNqQvNQUT7CrAQNv4uKfvjbmtnva_s6Zs4CnSehAEg0vkFYul0qlSa8RnMVE5zWbIvjg_lqfnG8ftvLgwKGyGm21Ncb_X_WEHnAh8YzpabLvSXUVn6Sdb2a1bJDPt5QdeeBjb_PImjjSRiSBPphG4-6OYWGaYX2D1T3WruTVqkZdFmzOqkwL_fjh7qrBankrD_Lw"
 
-my_token = os.environ['MY_TOKEN']
+my_token = "vk1.a.gIvmwaD-fhiybbPFlByHq7SVYwI4YTp8nd0_ogRz5wiM4PjWF9NAbizaVfXhcj6mWEVIRNEIB62AgR2bCmgW5FOkwwrbRkIeNm0Wlgmq9K2KYuO1cCeY8QtNVYiggtOtzLifu2SMRfLX4iuADp8NjViSoGGR6Dg5TGwYWUzIgFLjXmbqb80zOLnTmwzhvUtv9EqgHPvEECC7qyv1Iqi-4w"
 
 # Проверка ссылки
 def check_link_for_story(url):

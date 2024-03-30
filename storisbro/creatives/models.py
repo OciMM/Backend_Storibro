@@ -45,6 +45,8 @@ class AddSingleCreative(models.Model):
         default=1,
         verbose_name="Статус проверки")
     
+    archive = models.BooleanField(verbose_name='статус архива', default=False)
+    
     reservation = models.ManyToManyField(
         DateOfReservation, 
         verbose_name="Бронирование", 
@@ -76,11 +78,21 @@ class AddDoubleCreative(models.Model):
     second_link = models.CharField(max_length=500, verbose_name="Вторая ссылка")
     second_name = models.CharField(max_length=200, verbose_name="Второе название")
 
+    date = models.DateField(verbose_name="Дата добавления креатива", auto_now_add=True, null=True)
+
     status = models.ForeignKey(
         StatusCreative,
         on_delete=models.PROTECT, 
         default=1,
         verbose_name="Статус проверки")
+    
+    archive = models.BooleanField(verbose_name='статус архива', default=False)
+    
+    reservation = models.ManyToManyField(
+        DateOfReservation, 
+        verbose_name="Бронирование", 
+        blank=True, 
+    )
 
     def __str__(self):
         return self.first_name
@@ -95,12 +107,21 @@ class RepostCreative(models.Model):
     creative_type = models.CharField(max_length=100, default="RepostCreative", verbose_name="Тип креатива")
     link_of_story = models.CharField(max_length=150, verbose_name="Ссылка на историю")
     name = models.CharField(max_length=150, verbose_name="Название")
+    date = models.DateField(verbose_name="Дата добавления креатива", auto_now_add=True, null=True)
 
     status = models.ForeignKey(
         StatusCreative,
         on_delete=models.PROTECT, 
         default=1,
         verbose_name="Статус проверки")
+    
+    archive = models.BooleanField(verbose_name='статус архива', default=False)
+    
+    reservation = models.ManyToManyField(
+        DateOfReservation, 
+        verbose_name="Бронирование", 
+        blank=True, 
+    )
 
     def __str__(self):
         return self.name
@@ -115,12 +136,21 @@ class StickerCreative(models.Model):
     creative_type = models.CharField(max_length=100, default="StickerCreative", verbose_name="Тип креатива")
     link_of_story = models.CharField(max_length=150, verbose_name="Ссылка на историю")
     name = models.CharField(max_length=150, verbose_name="Название")
+    date = models.DateField(verbose_name="Дата добавления креатива", auto_now_add=True, null=True)
 
     status = models.ForeignKey(
         StatusCreative,
         on_delete=models.PROTECT, 
         default=1,
         verbose_name="Статус проверки")
+    
+    archive = models.BooleanField(verbose_name='статус архива', default=False)
+    
+    reservation = models.ManyToManyField(
+        DateOfReservation, 
+        verbose_name="Бронирование", 
+        blank=True, 
+    )
 
     def __str__(self):
         return self.name
@@ -136,12 +166,21 @@ class DoubleStickerCreative(models.Model):
     link_of_story_first = models.CharField(max_length=150, verbose_name="Ссылка на историю №1")
     link_of_story_second = models.CharField(max_length=150, verbose_name="Ссылка на историю №2")
     name = models.CharField(max_length=150, verbose_name="Название")
+    date = models.DateField(verbose_name="Дата добавления креатива", auto_now_add=True, null=True)
 
     status = models.ForeignKey(
         StatusCreative,
         on_delete=models.PROTECT, 
         default=1,
         verbose_name="Статус проверки")
+    
+    archive = models.BooleanField(verbose_name='статус архива', default=False)
+    
+    reservation = models.ManyToManyField(
+        DateOfReservation, 
+        verbose_name="Бронирование", 
+        blank=True, 
+    )
 
     def __str__(self):
         return self.name

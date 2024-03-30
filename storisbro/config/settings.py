@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = "django-insecure-7e&-018k=u9(&f+jigz43tcieu=)-%nc(x3s2iv!gt4272+v$0"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,8 +32,13 @@ ALLOWED_HOSTS = []
 
 # Для связи с фронтендом
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://localhost:3001'
 ]
+
+# settings.py
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -65,6 +70,8 @@ INSTALLED_APPS = [
     'download_video.apps.DownloadVideoConfig',
     'reservation.apps.ReservationConfig',
     'content.apps.ContentConfig',
+
+    'statistics_for_admin_site.apps.StatisticsForAdminSiteConfig',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +143,10 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',
                            'social_core.backends.vk.VKOAuth2',
 ]
+
+# PASSWORD_HASHERS = [
+#     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+# ]
 
 AUTHENTICATION_METHOD = 'email'
 
@@ -247,6 +258,7 @@ CELERY_TIMEZONE = 'Europe/Moscow'
 
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2621440
 
 LOGGING = {
     'version': 1,
