@@ -112,9 +112,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Storisbro_back_db',
-        'USER': 'storisbro_back_login',
-        'PASSWORD': 'admin',
+        'NAME': 'storisbro_main_db',
+        'USER': 'main_login_db',
+        'PASSWORD': 'yIuHxg9qBU55',
         'HOST': 'localhost',
         'PORT': 5432
     }
