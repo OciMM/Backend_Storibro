@@ -69,7 +69,7 @@ urlpatterns = [
     path('api_creatives/own_detail_creatives/<int:user>/<int:pk>', UserAllCreativesDetailAPIView.as_view()),
     path('api_creatives/detail_user_creative/<int:user>/<str:creative_type>/<int:pk>', UserCreativeDetailAPIView.as_view()),    
 
-    path('api_communities/communities', CommunityModelAPIView.as_view()),
+    path('api/api_communities/communities', CommunityModelAPIView.as_view()),
     path('api_communities/available_publics/<int:user_id>', AvailableCommunitiesAPIView.as_view()),
     path('api_communities/own_communities/<int:user>', UserCommunityModelAPIView.as_view()),
     path('api_communities/settings_communities/<int:user>/<int:pk>', UserSettingCommunityModelAPIView.as_view()),
