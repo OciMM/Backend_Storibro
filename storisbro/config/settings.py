@@ -32,8 +32,6 @@ ALLOWED_HOSTS = []
 
 # Для связи с фронтендом
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:3001',
     'http://31.129.96.225'
 ]
 
