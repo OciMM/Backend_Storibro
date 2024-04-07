@@ -33,11 +33,12 @@ ALLOWED_HOSTS = []
 # Для связи с фронтендом
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'http://localhost:3001'
+    'http://localhost:3001',
+    'http://31.129.96.225'
 ]
 
 # settings.py
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+CSRF_TRUSTED_ORIGINS = ['http://31.129.96.225']
 
 
 CORS_ALLOW_CREDENTIALS = True
