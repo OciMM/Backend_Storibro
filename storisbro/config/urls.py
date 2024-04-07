@@ -33,7 +33,7 @@ from statistics_for_admin_site.views import StatisticsAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api', include(('authentication.urls', 'authentication'), namespace='authentication')),
+    path('api/', include(('authentication.urls', 'authentication'), namespace='authentication')),
     path('api_users/users', UserAPIView.as_view()),
     path('api_users/change_profile/<int:pk>', ChangeProfileData.as_view()),
     path('api_users/check_email', AllEmailUsersAPIView.as_view()),
