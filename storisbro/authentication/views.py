@@ -209,7 +209,7 @@ def confirmation(email):
 
 @csrf_exempt
 def confirmation_change_email(request, email, new_email, confirmation_code):
-    user = User.objects.get()
+    user = User.objects.get(email=email)
 
     redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
     stored_code = redis_connection.get(f"confirmation_code_email:")
