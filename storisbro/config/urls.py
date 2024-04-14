@@ -41,8 +41,8 @@ urlpatterns = [
     path('api/confirmation/', include('confirmation.urls')),
     path('api/ref/', include('ref.urls')),
 
-    path('api/change_email/<str:email>', confirmation_send_email_code),
-    path('api/change_email/<str:email>/<str:new_email>/<str:confirmation_code>', confirmation_change_email),
+    path('api/change_email/<str:email>/', confirmation_send_email_code),
+    path('api/change_email/<str:email>/<str:new_email>/<str:confirmation_code>/', confirmation_change_email),
 
     path('api/notification/', include(('notification.urls', 'notification'), namespace='notification')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
