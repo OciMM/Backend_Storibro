@@ -2,7 +2,7 @@ import secrets
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .tasks import user_created, password_change_code
+from .tasks import user_created, password_change_code, email_change_code
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import JsonResponse
@@ -20,6 +20,9 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import exceptions
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import HttpResponse
+
+import random
+import string
 
 from .models import User
 from .serializers import UserLoginSerializer, UserProfileSerializer, UserCreateSerializer, UserSerializer
@@ -188,4 +191,34 @@ def confirm_code_change_password(request, email, confirmation_code):
         redis_connection.delete(f"confirmation_code:{user.id}")
         return JsonResponse({'message': 'Пароля успешно изменен.'}, status=status.HTTP_200_OK)
     else:
-        return JsonResponse({'error': 'Ошибка при смене пароля.'}, status=status.HTTP_401_UNAUTHORIZED) 
+        return JsonResponse({'error': 'Ошибка при смене пароля.'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+
+#Смена эл.почты в профиле
+def generate_code(length):
+    code = ''.join(random.choices(string.digits, k=length))
+    return code
+
+@csrf_exempt
+def confirmation(email):
+    confirmation_code = generate_code(4)
+    redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+    redis_connection.set(f"confirmation_code_email:{email}", confirmation_code)
+
+    email_change_code.delay(email, confirmation_code)
+
+@csrf_exempt
+def confirmation_change_email(request, email, new_email, confirmation_code):
+    user = User.objects.get()
+
+    redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+    stored_code = redis_connection.get(f"confirmation_code_email:")
+
+    if stored_code.decode('utf-8') == confirmation_code:
+        user.email = new_email
+        user.save()
+        redis_connection.delete(f"confirmation_code_email:")
+        return JsonResponse({'message': 'Эл.почта успешно изменена'}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({'error': 'Неверный код подтверждения.'}, status=status.HTTP_401_UNAUTHORIZED)
+    
