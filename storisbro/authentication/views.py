@@ -200,7 +200,7 @@ def generate_code(length):
     return code
 
 @csrf_exempt
-def confirmation(email):
+def confirmation_send_email_code(email):
     confirmation_code = generate_code(4)
     redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
     redis_connection.set(f"confirmation_code_email:{email}", confirmation_code)
