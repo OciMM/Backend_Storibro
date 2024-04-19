@@ -183,13 +183,14 @@ def email_change_code_func(request, email):
 
 @csrf_exempt
 def password_change_code_func(request, email):
-    confirmation_code = secrets.token_urlsafe(6)
+    confirmation_code = generate_code(4)
     redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
     redis_connection.set(f"confirmation_code:{email}", confirmation_code)
 
     password_change_code.delay(email, confirmation_code)
+    result = password_change_code.delay(email, confirmation_code)
 
-    return JsonResponse({'message': 'Код отправился'}, status=status.HTTP_200_OK)
+    return JsonResponse({'message': result}, status=status.HTTP_200_OK)
     
     # return HttpResponse("Password change code sent successfully.")
 
