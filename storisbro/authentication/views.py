@@ -207,6 +207,7 @@ def confirmation_send_email_code(request, email):
     redis_connection.set(f"confirmation_code_email:{email}", confirmation_code)
 
     email_change_code.delay(email, confirmation_code)
+    return JsonResponse({'message': 'Код отправился'}, status=status.HTTP_200_OK)
 
 @csrf_exempt
 def confirmation_change_email(request, email, new_email, confirmation_code):
