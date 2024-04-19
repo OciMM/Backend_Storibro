@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from .views import Home, UserCreateAPIView, activate_account, ObtainTokenView, UserProfileAPIView, activate_logged_in_with_new_device, \
-    password_change_code_func, confirm_code_change_password
+    password_change_code_func, confirm_code_change_password, confirmation_send_email_code
 
 app_name = 'social'
 
@@ -15,5 +15,7 @@ urlpatterns = [
     path('password_code_confirm/<str:email>/<str:confirmation_code>/', confirm_code_change_password),
     path('profile/', UserProfileAPIView.as_view()),
     path('social-auth/', include('social_django.urls', namespace='social')),
-    path('home/', Home.as_view(), name='home')
+    path('home/', Home.as_view(), name='home'),
+
+    path('change_email/<str:email>/', confirmation_send_email_code),
 ]
