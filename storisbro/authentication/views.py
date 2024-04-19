@@ -164,7 +164,24 @@ def activate_logged_in_with_new_device(request, user_id, confirmation_code):
         return JsonResponse({'error': 'Неверный код подтверждения.'}, status=status.HTTP_401_UNAUTHORIZED)
     
 
-# смена пароля
+# смена пароля и смена эл.почты в профиле
+@csrf_exempt
+def generate_code(length):
+    code = ''.join(random.choices(string.digits, k=length))
+    return code
+
+@csrf_exempt
+def email_change_code_func(request, email):
+    confirmation_code = generate_code(4)
+    redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+    redis_connection.set(f"confirmation_code:{email}", confirmation_code)
+
+    email_change_code.delay(email, confirmation_code)
+
+    return JsonResponse({'message': 'Код отправился'}, status=status.HTTP_200_OK)
+    
+    # return HttpResponse("Password change code sent successfully.")
+
 @csrf_exempt
 def password_change_code_func(request, email):
     confirmation_code = secrets.token_urlsafe(6)
@@ -176,6 +193,7 @@ def password_change_code_func(request, email):
     return JsonResponse({'message': 'Код отправился'}, status=status.HTTP_200_OK)
     
     # return HttpResponse("Password change code sent successfully.")
+
 
 
 @csrf_exempt
@@ -194,33 +212,28 @@ def confirm_code_change_password(request, email, confirmation_code):
         return JsonResponse({'error': 'Ошибка при смене пароля.'}, status=status.HTTP_401_UNAUTHORIZED)
     
 
-#Смена эл.почты в профиле
-def generate_code(length):
-    code = ''.join(random.choices(string.digits, k=length))
-    return code
+# @csrf_exempt
+# def confirmation_send_email_code(request, email):
+#     # email = request.POST.get('email')  # Извлекаем email из запроса
+#     confirmation_code = generate_code(4)
+#     redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+#     redis_connection.set(f"confirmation_code_email:{email}", confirmation_code)
 
-@csrf_exempt
-def confirmation_send_email_code(request, email):
-    # email = request.POST.get('email')  # Извлекаем email из запроса
-    confirmation_code = generate_code(4)
-    redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
-    redis_connection.set(f"confirmation_code_email:{email}", confirmation_code)
+#     email_change_code.delay(email, confirmation_code)
+#     return JsonResponse({'message': 'Код отправился'}, status=status.HTTP_200_OK)
 
-    email_change_code.delay(email, confirmation_code)
-    return JsonResponse({'message': 'Код отправился'}, status=status.HTTP_200_OK)
+# @csrf_exempt
+# def confirmation_change_email(request, email, new_email, confirmation_code):
+#     user = User.objects.get(email=email)
 
-@csrf_exempt
-def confirmation_change_email(request, email, new_email, confirmation_code):
-    user = User.objects.get(email=email)
+#     redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+#     stored_code = redis_connection.get(f"confirmation_code_email:")
 
-    redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
-    stored_code = redis_connection.get(f"confirmation_code_email:")
-
-    if stored_code.decode('utf-8') == confirmation_code:
-        user.email = new_email
-        user.save()
-        redis_connection.delete(f"confirmation_code_email:")
-        return JsonResponse({'message': 'Эл.почта успешно изменена'}, status=status.HTTP_200_OK)
-    else:
-        return JsonResponse({'error': 'Неверный код подтверждения.'}, status=status.HTTP_401_UNAUTHORIZED)
+#     if stored_code.decode('utf-8') == confirmation_code:
+#         user.email = new_email
+#         user.save()
+#         redis_connection.delete(f"confirmation_code_email:")
+#         return JsonResponse({'message': 'Эл.почта успешно изменена'}, status=status.HTTP_200_OK)
+#     else:
+#         return JsonResponse({'error': 'Неверный код подтверждения.'}, status=status.HTTP_401_UNAUTHORIZED)
     
