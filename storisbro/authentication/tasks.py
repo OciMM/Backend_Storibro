@@ -38,6 +38,6 @@ def email_change_code(email, confirmation_code):
     # user = User.objects.get(email=email)
     subject = 'Приветствую в нашей социальной сети'
     message = f'Дорогой пользователь,\n\n' \
-              f'Пожалуйста, введите для смены пароля следующий код: {confirmation_code}.'
+              f'Пожалуйста, введите для смены почты следующий код: {confirmation_code}.'
     mail_sent = send_mail(subject, message, 'bekasovmaks20@gmail.com', [email])
     return mail_sent
