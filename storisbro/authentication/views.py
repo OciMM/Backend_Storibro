@@ -165,7 +165,6 @@ def activate_logged_in_with_new_device(request, user_id, confirmation_code):
     
 
 # смена пароля и смена эл.почты в профиле
-@csrf_exempt
 def generate_code(length):
     code = ''.join(random.choices(string.digits, k=length))
     return code

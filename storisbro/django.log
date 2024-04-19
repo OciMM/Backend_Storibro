@@ -17192,3 +17192,5 @@ def email_change_code(email, confirmation_code):
     return 1
 
 Watching for file changes with StatReloader
+C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\storisbro\authentication\views.py changed, reloading.
+Watching for file changes with StatReloader
