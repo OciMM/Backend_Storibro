@@ -191,64 +191,37 @@ def change_email_func(request, email, new_email, confirmation_code):
         user.email = new_email
         user.save()
         redis_connection.delete(f"confirmation_code:{email}")
-        return JsonResponse({'message': 'Аккаунт успешно активирован.'}, status=status.HTTP_200_OK)
+        return JsonResponse({'message': 'Эл. почта изменена'}, status=status.HTTP_200_OK)
     else:
         return JsonResponse({'error': 'Неверный код подтверждения.'}, status=status.HTTP_401_UNAUTHORIZED)
 
-
+# смена пароля
 @csrf_exempt
 def password_change_code_func(request, email):
     confirmation_code = generate_code(4)
     redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
-    redis_connection.set(f"confirmation_code:{email}", confirmation_code)
+    redis_connection.set(f"confirmation_code_password:{email}", confirmation_code)
 
     password_change_code.delay(email, confirmation_code)
-    result = password_change_code.delay(email, confirmation_code)
+    # result = password_change_code.delay(email, confirmation_code)
 
-    return JsonResponse({'message': result}, status=status.HTTP_200_OK)
+    return JsonResponse({'message': 'код отправлен'}, status=status.HTTP_200_OK)
     
     # return HttpResponse("Password change code sent successfully.")
 
 
-
 @csrf_exempt
-def confirm_code_change_password(request, email, confirmation_code):
+def confirm_code_change_password(request, email, new_password, confirmation_code):
     user = get_object_or_404(User, email=email)
 
     redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
-    stored_code = redis_connection.get(f"confirmation_code:{user.id}")
+    stored_code = redis_connection.get(f"confirmation_code_password:{email}")
 
     if stored_code.decode('utf-8') == confirmation_code:
-        user.is_active = True
+        user.password = new_password
         user.save()
-        redis_connection.delete(f"confirmation_code:{user.id}")
+        redis_connection.delete(f"confirmation_code_password:{email}")
         return JsonResponse({'message': 'Пароля успешно изменен.'}, status=status.HTTP_200_OK)
     else:
         return JsonResponse({'error': 'Ошибка при смене пароля.'}, status=status.HTTP_401_UNAUTHORIZED)
-    
-
-# @csrf_exempt
-# def confirmation_send_email_code(request, email):
-#     # email = request.POST.get('email')  # Извлекаем email из запроса
-#     confirmation_code = generate_code(4)
-#     redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
-#     redis_connection.set(f"confirmation_code_email:{email}", confirmation_code)
-
-#     email_change_code.delay(email, confirmation_code)
-#     return JsonResponse({'message': 'Код отправился'}, status=status.HTTP_200_OK)
-
-# @csrf_exempt
-# def confirmation_change_email(request, email, new_email, confirmation_code):
-#     user = User.objects.get(email=email)
-
-#     redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
-#     stored_code = redis_connection.get(f"confirmation_code_email:")
-
-#     if stored_code.decode('utf-8') == confirmation_code:
-#         user.email = new_email
-#         user.save()
-#         redis_connection.delete(f"confirmation_code_email:")
-#         return JsonResponse({'message': 'Эл.почта успешно изменена'}, status=status.HTTP_200_OK)
-#     else:
-#         return JsonResponse({'error': 'Неверный код подтверждения.'}, status=status.HTTP_401_UNAUTHORIZED)
     
