@@ -179,7 +179,22 @@ def email_change_code_func(request, email):
 
     return JsonResponse({'message': 'Код отправился'}, status=status.HTTP_200_OK)
     
-    # return HttpResponse("Password change code sent successfully.")
+
+@csrf_exempt
+def change_email_func(request, email, new_email, confirmation_code):
+    user = get_object_or_404(User, email=email)
+
+    redis_connection = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+    stored_code = redis_connection.get(f"confirmation_code:{email}")
+
+    if stored_code.decode('utf-8') == confirmation_code:
+        user.email = new_email
+        user.save()
+        redis_connection.delete(f"confirmation_code:{email}")
+        return JsonResponse({'message': 'Аккаунт успешно активирован.'}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({'error': 'Неверный код подтверждения.'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 @csrf_exempt
 def password_change_code_func(request, email):

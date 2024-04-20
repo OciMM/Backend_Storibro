@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from .views import Home, UserCreateAPIView, activate_account, ObtainTokenView, UserProfileAPIView, activate_logged_in_with_new_device, \
-    password_change_code_func, confirm_code_change_password, email_change_code_func
+    password_change_code_func, confirm_code_change_password, email_change_code_func, change_email_func
 
 app_name = 'social'
 
@@ -18,4 +18,5 @@ urlpatterns = [
     path('home/', Home.as_view(), name='home'),
 
     path('change_email/<str:email>/', email_change_code_func),
+    path('change_email/<str:email>/<str:new_email>/<str:confirmation_code>/', change_email_func)
 ]
