@@ -181,7 +181,7 @@ class AvailableCommunitiesAPIView(APIView):
         except User.DoesNotExist:
             return Response(status=404)
 
-
+#!!!
 class AddAvailableCommunitiesAPIView(APIView):
     def post(self, request, arr_communities):
         url = request.data.get('url')

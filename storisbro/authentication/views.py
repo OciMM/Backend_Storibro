@@ -20,6 +20,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import exceptions
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import HttpResponse
+from django.contrib.auth.hashers import make_password
 
 import random
 import string
@@ -218,7 +219,7 @@ def confirm_code_change_password(request, email, new_password, confirmation_code
     stored_code = redis_connection.get(f"confirmation_code_password:{email}")
 
     if stored_code.decode('utf-8') == confirmation_code:
-        user.password = new_password
+        user.password = make_password(new_password)
         user.save()
         redis_connection.delete(f"confirmation_code_password:{email}")
         return JsonResponse({'message': 'Пароля успешно изменен.'}, status=status.HTTP_200_OK)
