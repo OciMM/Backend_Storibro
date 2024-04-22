@@ -180,3 +180,66 @@ class AvailableCommunitiesAPIView(APIView):
             return Response({"list_publics": info[0], "list_avatars": info[1]})
         except User.DoesNotExist:
             return Response(status=404)
+
+
+class AddAvailableCommunitiesAPIView(APIView):
+    def post(self, request, arr_communities):
+        url = request.data.get('url')
+        name = request.data.get('name')
+        
+        if url:
+        
+            community_data = add_new_community_of_link(url)
+            if community_data:
+                name = community_data['name']
+                # photo = community_data['photo']
+                count_members = community_data['count_members']
+                user_pk = request.data.get('user')
+                
+                try:
+                    user = User.objects.get(pk=int(user_pk))
+                except (User.DoesNotExist, ValueError):
+                    return Response({'error': 'Некорректный пользователь'}, status=status.HTTP_400_BAD_REQUEST)
+        
+                community = CommunityModel.objects.create(user=user, name=name, count_members=count_members, url=url)
+                serializer = CommunityModelSerializer(community)
+
+                setting = Setting.objects.first()
+
+                # Если объектов нет, можно обработать эту ситуацию
+                if not setting:
+                    return Response({'error': 'Нет доступных статусов'}, status=status.HTTP_400_BAD_REQUEST)
+
+                # Создание объекта CommunitySetting и связь с CommunityModel и Setting
+                CommunitySetting.objects.create(community=community, status=setting)
+
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        elif name:
+            community_data = add_new_community_of_name(name)
+            if community_data:
+                # photo = community_data['photo']
+                count_members = community_data['count_members']
+                url = community_data['url']
+                user_pk = request.data.get('user')
+                
+                try:
+                    user = User.objects.get(pk=int(user_pk))
+                except (User.DoesNotExist, ValueError):
+                    return Response({'error': 'Некорректный пользователь'}, status=status.HTTP_400_BAD_REQUEST)
+        
+                community = CommunityModel.objects.create(user=user, name=name, count_members=count_members, url=url)
+                serializer = CommunityModelSerializer(community)
+
+                setting = Setting.objects.first()
+
+                # Если объектов нет, можно обработать эту ситуацию
+                if not setting:
+                    return Response({'error': 'Нет доступных статусов'}, status=status.HTTP_400_BAD_REQUEST)
+
+                # Создание объекта CommunitySetting и связь с CommunityModel и Setting
+                CommunitySetting.objects.create(community=community, status=setting)
+
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response({'error': 'Группа не удовлетворяет условиям'}, status=status.HTTP_400_BAD_REQUEST)
