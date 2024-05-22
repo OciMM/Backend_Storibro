@@ -32,7 +32,8 @@ ALLOWED_HOSTS = ['31.129.96.225']
 
 # Для связи с фронтендом
 CORS_ALLOWED_ORIGINS = [
-    'http://31.129.96.225'
+    'http://31.129.96.225',
+    'http://62.113.96.70',
 ]
 
 # settings.py
