@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from notification.tasks import send_notification
 from .models import Notification
+from authentication.models import User
+from authentication.serializers import UserSerializer
 from .serializers import NotificationSerializer
 from django.shortcuts import get_object_or_404
 
@@ -34,3 +36,11 @@ class NotificationMainAPIView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class NotificationVKandEmail(APIView):
+    def get(self, request, uid):
+        notification_model = get_object_or_404(User, UID=uid)
+        serializer = UserSerializer(notification_model)
+        return Response(serializer.data)
+    
