@@ -11,7 +11,7 @@ class Notification(models.Model):
     title = models.CharField(max_length=250, verbose_name="Тема уведомления", null=True)
     message = models.TextField(verbose_name="Текст уведомления", null=True)
     comment_text = models.TextField(verbose_name="Текст комментария", blank=True, null=True)
-    status = models.BooleanField(verbose_name="Тип уведомления (усепшный или нет)", null=True)
+    status = models.BooleanField(verbose_name="Тип уведомления (усепшный или нет)", blank=True, null=True)
     created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
 
     def __str__(self):
