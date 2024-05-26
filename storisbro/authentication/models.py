@@ -44,6 +44,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     community_count = models.PositiveIntegerField(default=0)
     creative_count = models.PositiveIntegerField(default=0)
 
+    UID = models.CharField(max_length=10, unique=True, null=True, verbose_name="UID пользователя")
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email' 

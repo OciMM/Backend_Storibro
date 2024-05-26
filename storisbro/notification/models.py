@@ -1,12 +1,21 @@
 from django.db import models
-
-from authentication.models import User
+from django.conf import settings
 
 
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
-    message = models.CharField(max_length=100)
-    created = models.DateTimeField(auto_now_add=True)
+    """
+    Это модель уведомления.
+    На основе этой модели будут отправляться сообщения в личный кабинет.
+    """
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, to_field='UID', on_delete=models.CASCADE, null=True)
+    title = models.CharField(max_length=250, verbose_name="Тема уведомления", null=True)
+    message = models.TextField(verbose_name="Текст уведомления", null=True)
+    comment_text = models.TextField(verbose_name="Текст комментария", blank=True, null=True)
+    status = models.BooleanField(verbose_name="Тип уведомления (усепшный или нет)", null=True)
+    created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         verbose_name = 'Уведомление'

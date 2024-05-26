@@ -6,16 +6,30 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .tasks import user_created, user_login_code
 from .models import User
+import random
+import string
 
+# создание UID
+def create_user_uid():
+    # Задаем длину строки
+    length = 10
+
+    # Создаем строку из случайных букв и цифр
+    random_string = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
+
+    return random_string
 
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'password']
+        fields = ['id', 'email', 'password', 'UID']
 
     def create(self, validated_data):
         user = super().create(validated_data)
         user.set_password(user.password)
+        created_UID = create_user_uid
+        user.UID = created_UID
+        
         user.save()
 
         # Генерация и сохранение кода в Redis
@@ -37,6 +51,7 @@ class UserLoginSerializer(TokenObtainPairSerializer):
         data['access'] = str(refresh.access_token)
         data['id'] = self.user.id  # Добавляем ID пользователя
         data['count_of_visit'] = self.user.count_of_visit
+        data['UID'] = self.user.UID
 
         if not self.user.is_active:
             raise serializers.ValidationError("Аккаунт не активирован.")
