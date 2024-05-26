@@ -27,7 +27,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = super().create(validated_data)
         user.set_password(user.password)
-        created_UID = create_user_uid
+        created_UID = create_user_uid()
         user.UID = created_UID
         
         user.save()
