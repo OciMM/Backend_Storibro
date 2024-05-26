@@ -12,7 +12,7 @@ import string
 # создание UID
 def create_user_uid():
     # Задаем длину строки
-    length = 10
+    length = 9
 
     # Создаем строку из случайных букв и цифр
     random_string = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
