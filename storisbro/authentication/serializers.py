@@ -9,15 +9,6 @@ from .models import User
 import random
 import string
 
-# создание UID
-def create_user_uid():
-    # Задаем длину строки
-    length = 9
-
-    # Создаем строку из случайных букв и цифр
-    random_string = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
-
-    return random_string
 
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,7 +18,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = super().create(validated_data)
         user.set_password(user.password)
-        created_UID = create_user_uid()
+        created_UID = secrets.token_urlsafe(9)
         user.UID = created_UID
         
         user.save()
