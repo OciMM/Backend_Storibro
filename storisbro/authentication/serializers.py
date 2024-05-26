@@ -6,8 +6,6 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .tasks import user_created, user_login_code
 from .models import User
-import random
-import string
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -18,9 +16,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = super().create(validated_data)
         user.set_password(user.password)
-        created_UID = secrets.token_urlsafe(9)
-        user.UID = created_UID
-        
         user.save()
 
         # Генерация и сохранение кода в Redis

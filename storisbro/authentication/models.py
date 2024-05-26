@@ -1,7 +1,7 @@
 from django.contrib.auth.models import PermissionsMixin, Group, Permission
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
-
+import secrets
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -12,6 +12,8 @@ class UserManager(BaseUserManager):
         right_email = email.lower()
         user = self.model(email=right_email, **extra_fields)
         user.set_password(password)
+        created_UID = secrets.token_urlsafe(9)
+        user.UID = created_UID
         # user.is_active = True  
         user.save(using=self._db)
         return user
