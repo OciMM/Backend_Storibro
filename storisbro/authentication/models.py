@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
         right_email = email.lower()
         created_UID = secrets.token_urlsafe(9)
         vk_id = "occams.blade"
-        user = self.model(email=right_email, UID=created_UID, vk_id=vk_id **extra_fields)
+        user = self.model(email=right_email, UID=created_UID, vk_id=vk_id, **extra_fields)
         user.set_password(password)
         # user.is_active = True  
         user.save(using=self._db)
