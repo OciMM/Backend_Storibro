@@ -4,7 +4,7 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 import secrets
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, UID, vk_id, password=None, **extra_fields):
+    def create_user(self, email, UID=None, vk_id=None, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
         
