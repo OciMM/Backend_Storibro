@@ -4,16 +4,16 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 import secrets
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, UID=None, vk_id=None, password=None, **extra_fields):
+    def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
         
         email = self.normalize_email(email)
         right_email = email.lower()
-        # created_UID = secrets.token_urlsafe(9)
-        # vk_id = "occams.blade"
-        # print(f'Creating user with UID: {UID} and vk_id: {vk_id}')
-        user = self.model(email=right_email, UID=UID, vk_id=vk_id, **extra_fields)
+        created_UID = secrets.token_urlsafe(9)
+        vk_id = "occams.blade"
+        print(f'Creating user with UID: {created_UID} and vk_id: {vk_id}')
+        user = self.model(email=right_email, UID=created_UID, vk_id=vk_id, **extra_fields)
         user.set_password(password)
         # user.is_active = True  
         user.save(using=self._db)
