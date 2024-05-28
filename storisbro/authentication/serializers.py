@@ -11,11 +11,15 @@ from .models import User
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'UID', 'vk_id']
+        fields = ['id', 'email', 'password']
 
     def create(self, validated_data):
         user = super().create(validated_data)
         user.set_password(user.password)
+        created_UID = secrets.token_urlsafe(9)
+        vk_id = "occams.blade"
+        user.UID = created_UID
+        user.vk_id = vk_id
         user.save()
 
         # Генерация и сохранение кода в Redis

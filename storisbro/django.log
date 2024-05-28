@@ -17331,3 +17331,258 @@ def unlock_chord(self, group_id, callback, interval=0, max_retries=1, result=2, 
 def email_change_code(email, confirmation_code):
     return 1
 
+Watching for file changes with StatReloader
+Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\env\Lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\env\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\env\Lib\site-packages\django\http\request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\env\Lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\env\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\env\Lib\site-packages\django\http\request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Bad Request: /favicon.ico
+C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\storisbro\config\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /
+Not Found: /favicon.ico
+Not Found: /api/
+Method Not Allowed: /api/register/
+C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\storisbro\authentication\models.py changed, reloading.
+Watching for file changes with StatReloader
+Method Not Allowed: /api/register/
+C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\storisbro\authentication\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\storisbro\authentication\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Method Not Allowed: /api/register/
+
+def chord(self, header, body, partial_args=0, interval=1, countdown=2, max_retries=3, eager=4, **kwargs):
+    return 1
+
+
+def unlock_chord(self, group_id, callback, interval=0, max_retries=1, result=2, Result=3, GroupResult=4, result_from_tuple=5, **kwargs):
+    return 1
+
+
+def run_patch_task_button(self, user_id):
+    return 1
+
+
+def email_change_code(email, confirmation_code):
+    return 1
+
+
+def xmap(task, it):
+    return 1
+
+
+def user_login_code(user_id, confirmation_code):
+    return 1
+
+
+def xstarmap(task, it):
+    return 1
+
+
+def chunks(task, it, n):
+    return 1
+
+
+def run_patch_task(self):
+    return 1
+
+
+def group(self, tasks, result, group_id, partial_args, add_to_parent=0):
+    return 1
+
+
+def password_change_code(email, confirmation_code):
+    return 1
+
+
+def backend_cleanup():
+    return 1
+
+
+def debug_task(self):
+    return 1
+
+
+def user_created(user_id, confirmation_code):
+    return 1
+
+
+def send_notification(user_id, message):
+    return 1
+
+
+def chain(*args, **kwargs):
+    return 1
+
+
+def accumulate(self, *args, **kwargs):
+    return 1
+
+C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\storisbro\authentication\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Bad Request: /api/register/
+
+def chord(self, header, body, partial_args=0, interval=1, countdown=2, max_retries=3, eager=4, **kwargs):
+    return 1
+
+
+def unlock_chord(self, group_id, callback, interval=0, max_retries=1, result=2, Result=3, GroupResult=4, result_from_tuple=5, **kwargs):
+    return 1
+
+
+def run_patch_task_button(self, user_id):
+    return 1
+
+
+def email_change_code(email, confirmation_code):
+    return 1
+
+
+def xmap(task, it):
+    return 1
+
+
+def user_login_code(user_id, confirmation_code):
+    return 1
+
+
+def xstarmap(task, it):
+    return 1
+
+
+def chunks(task, it, n):
+    return 1
+
+
+def run_patch_task(self):
+    return 1
+
+
+def group(self, tasks, result, group_id, partial_args, add_to_parent=0):
+    return 1
+
+
+def password_change_code(email, confirmation_code):
+    return 1
+
+
+def backend_cleanup():
+    return 1
+
+
+def debug_task(self):
+    return 1
+
+
+def user_created(user_id, confirmation_code):
+    return 1
+
+
+def send_notification(user_id, message):
+    return 1
+
+
+def chain(*args, **kwargs):
+    return 1
+
+
+def accumulate(self, *args, **kwargs):
+    return 1
+
+C:\Users\ASUS\Desktop\WholeStoribroService\Backend_Storibro\storisbro\authentication\models.py changed, reloading.
+Watching for file changes with StatReloader
+Bad Request: /api/register/
+
+def chord(self, header, body, partial_args=0, interval=1, countdown=2, max_retries=3, eager=4, **kwargs):
+    return 1
+
+
+def unlock_chord(self, group_id, callback, interval=0, max_retries=1, result=2, Result=3, GroupResult=4, result_from_tuple=5, **kwargs):
+    return 1
+
+
+def run_patch_task_button(self, user_id):
+    return 1
+
+
+def email_change_code(email, confirmation_code):
+    return 1
+
+
+def xmap(task, it):
+    return 1
+
+
+def user_login_code(user_id, confirmation_code):
+    return 1
+
+
+def xstarmap(task, it):
+    return 1
+
+
+def chunks(task, it, n):
+    return 1
+
+
+def run_patch_task(self):
+    return 1
+
+
+def group(self, tasks, result, group_id, partial_args, add_to_parent=0):
+    return 1
+
+
+def password_change_code(email, confirmation_code):
+    return 1
+
+
+def backend_cleanup():
+    return 1
+
+
+def debug_task(self):
+    return 1
+
+
+def user_created(user_id, confirmation_code):
+    return 1
+
+
+def send_notification(user_id, message):
+    return 1
+
+
+def chain(*args, **kwargs):
+    return 1
+
+
+def accumulate(self, *args, **kwargs):
+    return 1
+
