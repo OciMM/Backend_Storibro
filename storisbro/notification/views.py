@@ -9,6 +9,7 @@ from authentication.models import User
 from authentication.serializers import UserSerializer
 from .serializers import NotificationSerializer
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
 
 
 class SendNotificationView(APIView):
@@ -25,12 +26,14 @@ class SendNotificationView(APIView):
 
 class NotificationMainAPIView(APIView):
     def get(self, request, uid):
-        notification_model = get_object_or_404(Notification, user__UID=uid)
+        user = get_object_or_404(User, UID=uid)
+        notification_model = get_object_or_404(Notification, user=user)
         serializer = NotificationSerializer(notification_model)
         return Response(serializer.data)
     
     def post(self, request, uid):
-        notification_model = get_object_or_404(Notification, user__UID=uid)
+        user = get_object_or_404(User, UID=uid)
+        notification_model = get_object_or_404(Notification, user=user)
         serializer = NotificationSerializer(notification_model, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
