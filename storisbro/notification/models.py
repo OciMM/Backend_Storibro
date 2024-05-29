@@ -7,7 +7,7 @@ class Notification(models.Model):
     Это модель уведомления.
     На основе этой модели будут отправляться сообщения в личный кабинет.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, to_field='UID', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=250, verbose_name="Тема уведомления", null=True)
     message = models.TextField(verbose_name="Текст уведомления", null=True)
     comment_text = models.TextField(verbose_name="Текст комментария", blank=True, null=True)
