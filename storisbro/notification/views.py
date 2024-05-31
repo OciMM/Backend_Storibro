@@ -25,14 +25,12 @@ class SendNotificationView(APIView):
     
 
 class NotificationMainAPIView(APIView):
-    def get(self, request, uid):
-        notification_model = Notification.objects.get(user__UID=uid) 
-        serializer = NotificationSerializer(notification_model)
-        return Response(serializer.data)
-    
-    def post(self, request, uid):
-        notification_model = Notification.objects.get(user__UID=uid) 
-        serializer = NotificationSerializer(notification_model, data=request.data)
+    # def get(self, request, uid):
+    #     notification_model = Notification.objects.get(user__UID=uid) 
+    #     serializer = NotificationSerializer(notification_model)
+    #     return Response(serializer.data)
+    def post(self, request):
+        serializer = NotificationSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
