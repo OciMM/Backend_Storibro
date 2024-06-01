@@ -56,16 +56,16 @@ class BulkNotificationCreateAPIView(APIView):
 
         title = request.data.get('title')
         message = request.data.get('message')
-        comment_text = request.data.get('comment_text')
-        status_value = request.data.get('status')
+        # comment_text = request.data.get('comment_text')
+        # status_value = request.data.get('status')
 
         for user in users:
             notifications.append(Notification(
                 user=user,
                 title=title,
                 message=message,
-                comment_text=comment_text,
-                status=status_value
+                # comment_text=comment_text,
+                # status=status_value
             ))
 
         Notification.objects.bulk_create(notifications)
