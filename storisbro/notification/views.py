@@ -39,8 +39,8 @@ class NotificationMainAPIView(APIView):
 
 class NotificationGetAPIView(APIView):
     def get(self, request, uid):
-        notification_model = Notification.objects.get(user=uid) 
-        serializer = NotificationSerializer(notification_model)
+        notification_model = Notification.objects.filter(user=uid) 
+        serializer = NotificationSerializer(notification_model, many=True)
         return Response(serializer.data)
     
 
