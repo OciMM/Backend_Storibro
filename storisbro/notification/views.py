@@ -37,6 +37,13 @@ class NotificationMainAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
+class NotificationGetAPIView(APIView):
+    def get(self, request, uid):
+        notification_model = Notification.objects.get(user=uid) 
+        serializer = NotificationSerializer(notification_model)
+        return Response(serializer.data)
+    
+
 class NotificationVKandEmail(APIView):
     def get(self, request, uid):
         notification_model = get_object_or_404(User, UID=uid)
