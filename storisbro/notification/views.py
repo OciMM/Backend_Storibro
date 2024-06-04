@@ -46,6 +46,12 @@ class NotificationVKandEmail(APIView):
         serializer = UserSerializer(notification_model)
         return Response(serializer.data)
     
+class GetUsers(APIView):
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+    
 
 # class BulkNotificationCreateAPIView(APIView):
 #     """Уведомление для всех"""
