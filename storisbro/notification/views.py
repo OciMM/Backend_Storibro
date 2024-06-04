@@ -35,7 +35,7 @@ class NotificationMainAPIView(APIView):
 
 class NotificationGetAPIView(APIView):
     def get(self, request, uid):
-        notification_model = Notification.objects.filter(user=uid).order_by('-date')
+        notification_model = Notification.objects.filter(user=uid).order_by('-created')
         serializer = NotificationSerializer(notification_model, many=True)
         return Response(serializer.data)
     
