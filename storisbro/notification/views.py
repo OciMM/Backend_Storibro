@@ -47,28 +47,28 @@ class NotificationVKandEmail(APIView):
         return Response(serializer.data)
     
 
-class BulkNotificationCreateAPIView(APIView):
-    """Уведомление для всех"""
-    def post(self, request):
-        # User = get_user_model()  # Получаем модель пользователя
-        users = User.objects.all()  # Получаем всех пользователей
-        notifications = []
+# class BulkNotificationCreateAPIView(APIView):
+#     """Уведомление для всех"""
+#     def post(self, request):
+#         # User = get_user_model()  # Получаем модель пользователя
+#         users = User.objects.all()  # Получаем всех пользователей
+#         notifications = []
 
-        title = request.data.get('title')
-        message = request.data.get('message')
-        # comment_text = request.data.get('comment_text')
-        # status_value = request.data.get('status')
+#         title = request.data.get('title')
+#         message = request.data.get('message')
+#         # comment_text = request.data.get('comment_text')
+#         # status_value = request.data.get('status')
 
-        for user in users:
-            notifications.append(Notification(
-                user=user,
-                title=title,
-                message=message,
-                # comment_text=comment_text,
-                # status=status_value
-            ))
+#         for user in users:
+#             notifications.append(Notification(
+#                 user=user,
+#                 title=title,
+#                 message=message,
+#                 # comment_text=comment_text,
+#                 # status=status_value
+#             ))
 
-        Notification.objects.bulk_create(notifications)
+#         Notification.objects.bulk_create(notifications)
 
-        return Response({"detail": "Notifications created for all users."}, status=status.HTTP_201_CREATED)
+#         return Response({"detail": "Notifications created for all users."}, status=status.HTTP_201_CREATED)
     
