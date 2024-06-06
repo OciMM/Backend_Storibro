@@ -13,6 +13,7 @@ class Notification(models.Model):
     comment_text = models.TextField(verbose_name="Текст комментария", blank=True, null=True)
     status = models.BooleanField(verbose_name="Тип уведомления (усепшный или нет)", blank=True, null=True)
     created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
+    file = models.FileField(verbose_name="Файл для креатива", upload_to='files', blank=True, null=True)
 
     def __str__(self):
         return self.title
