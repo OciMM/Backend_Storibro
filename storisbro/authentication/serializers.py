@@ -11,7 +11,7 @@ from .models import User
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'password']
+        fields = ['id', 'email', 'password', 'is_active']
 
     def create(self, validated_data):
         user = super().create(validated_data)
@@ -41,6 +41,7 @@ class UserLoginSerializer(TokenObtainPairSerializer):
         data['access'] = str(refresh.access_token)
         data['id'] = self.user.id  # Добавляем ID пользователя
         data['count_of_visit'] = self.user.count_of_visit
+        data['is_active'] = self.user.is_active
         data['UID'] = self.user.UID
 
         if not self.user.is_active:
