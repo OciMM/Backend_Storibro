@@ -10,7 +10,7 @@ from authentication.serializers import UserSerializer
 from .serializers import NotificationSerializer
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-
+ 
 
 class SendNotificationView(APIView):
     def post(self, request, *args, **kwargs):
