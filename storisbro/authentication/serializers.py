@@ -66,7 +66,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'password', 'name')
         # fields = '__all__'
-
+ 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
