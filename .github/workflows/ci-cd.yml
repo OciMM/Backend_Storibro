@@ -50,18 +50,18 @@ jobs:
           python manage.py test
         working-directory: storisbro
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '14'
 
-      - name: Install frontend dependencies
-        run: npm install
-        working-directory: frontend
+      # - name: Install frontend dependencies
+      #   run: npm install
+      #   working-directory: frontend
 
-      - name: Run frontend build
-        run: npm run build
-        working-directory: frontend
+      # - name: Run frontend build
+      #   run: npm run build
+      #   working-directory: frontend
 
   deploy:
     needs: build
