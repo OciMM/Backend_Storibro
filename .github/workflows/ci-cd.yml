@@ -56,12 +56,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Start SSH agent
-        run: eval $(ssh-agent -s)
+        run: |
+          eval $(ssh-agent -s)
+          ssh-agent -s
 
       - name: Add SSH key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+        run: |
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
 
       - name: Deploy to server
         env:
