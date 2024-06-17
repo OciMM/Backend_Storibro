@@ -27,6 +27,9 @@ jobs:
         ports:
           - 5432:5432
 
+    # env:
+    #   DATABASE_URL: postgres://user:password@localhost:5432/test_db
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -47,36 +50,34 @@ jobs:
           python manage.py test
         working-directory: storisbro
 
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '14'
+
+      # - name: Install frontend dependencies
+      #   run: npm install
+      #   working-directory: frontend
+
+      # - name: Run frontend build
+      #   run: npm run build
+      #   working-directory: frontend
+
   deploy:
     needs: build
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Configure SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.SERVER_HOST }}
-          SSH_USER: ${{ secrets.SERVER_USER }}
-        run: |
-          mkdir C:\Users\runneradmin\.ssh
-          echo "$env:SSH_PRIVATE_KEY" | Out-File -FilePath C:\Users\runneradmin\.ssh\id_rsa -Encoding ascii
-          (Get-Content C:\Users\runneradmin\.ssh\id_rsa) -replace "`r`n", "`n" | Set-Content C:\Users\runneradmin\.ssh\id_rsa
-          icacls C:\Users\runneradmin\.ssh\id_rsa /inheritance:r /grant:r "runneradmin:F" /c
-          $ssh_config = @"
-          Host target
-            HostName $env:SSH_HOST
-            User $env:SSH_USER
-            IdentityFile C:\Users\runneradmin\.ssh\id_rsa
-            LogLevel ERROR
-            StrictHostKeyChecking no
-          "@
-          $ssh_config | Out-File -FilePath C:\Users\runneradmin\.ssh\config -Encoding ascii
-
       - name: Deploy to server
         env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_IP: ${{ secrets.SERVER_HOST }}
           DEPLOY_PATH: /var/www/build
         run: |
-          ssh target "cd $DEPLOY_PATH && git pull && source env/bin/activate && pip install -r storisbro/requirements.txt && python manage.py migrate && sudo systemctl restart gunicorn && sudo systemctl restart nginx"
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "cd $DEPLOY_PATH && git pull && source env/bin/activate && pip install -r storisbro/requirements.txt && python manage.py migrate && sudo systemctl restart gunicorn && sudo systemctl restart nginx"
+
