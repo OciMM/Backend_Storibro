@@ -49,27 +49,34 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Start SSH agent
-        run: |
-          eval $(ssh-agent -s)
-          ssh-agent -s
-
-      - name: Add SSH key
+      - name: Configure SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SERVER_HOST }}
+          SSH_USER: ${{ secrets.SERVER_USER }}
         run: |
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+          mkdir C:\Users\runneradmin\.ssh
+          echo "$env:SSH_PRIVATE_KEY" | Out-File -FilePath C:\Users\runneradmin\.ssh\id_rsa -Encoding ascii
+          (Get-Content C:\Users\runneradmin\.ssh\id_rsa) -replace "`r`n", "`n" | Set-Content C:\Users\runneradmin\.ssh\id_rsa
+          icacls C:\Users\runneradmin\.ssh\id_rsa /inheritance:r /grant:r "runneradmin:F" /c
+          $ssh_config = @"
+          Host target
+            HostName $env:SSH_HOST
+            User $env:SSH_USER
+            IdentityFile C:\Users\runneradmin\.ssh\id_rsa
+            LogLevel ERROR
+            StrictHostKeyChecking no
+          "@
+          $ssh_config | Out-File -FilePath C:\Users\runneradmin\.ssh\config -Encoding ascii
 
       - name: Deploy to server
         env:
-          SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_IP: ${{ secrets.SERVER_HOST }}
           DEPLOY_PATH: /var/www/build
         run: |
-          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "cd $DEPLOY_PATH && git pull && source env/bin/activate && pip install -r storisbro/requirements.txt && python manage.py migrate && sudo systemctl restart gunicorn && sudo systemctl restart nginx"
+          ssh target "cd $DEPLOY_PATH && git pull && source env/bin/activate && pip install -r storisbro/requirements.txt && python manage.py migrate && sudo systemctl restart gunicorn && sudo systemctl restart nginx"
