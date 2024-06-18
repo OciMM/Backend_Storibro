@@ -49,6 +49,8 @@ jobs:
           python manage.py makemigrations
           python manage.py migrate
           python manage.py test
+          celery -A config beat -l info
+          celery -A config worker --pool=solo -l info
         working-directory: storisbro
 
 
