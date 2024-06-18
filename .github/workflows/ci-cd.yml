@@ -52,20 +52,18 @@ jobs:
         working-directory: storisbro
 
 
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Deploy to server
-  #       env:
-  #         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         SERVER_USER: ${{ secrets.SERVER_USER }}
-  #         SERVER_IP: ${{ secrets.SERVER_HOST }}
-  #         DEPLOY_PATH: /var/www/build
-  #       run: |
-  #         ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "cd $DEPLOY_PATH && git pull && source env/bin/activate && pip install -r storisbro/requirements.txt && python manage.py migrate && sudo systemctl restart gunicorn && sudo systemctl restart nginx"
+      - name: Deploy to server
+        - run: set -eu
+        - run: mkdir "$HOME/.ssh"
+        - run: echo "${{ secrets.key }}" > "$HOME/.ssh/key"
+        - run: chmod 600 "$HOME/.ssh/key"
+        - run: "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" git pull && source env/bin/activate && pip install -r storisbro/requirements.txt && python manage.py migrate && sudo systemctl restart gunicorn && sudo systemctl restart nginx
 
