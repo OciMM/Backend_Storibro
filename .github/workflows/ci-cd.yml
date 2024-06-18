@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - main
- 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,6 +26,9 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+
+    # env:
+    #   DATABASE_URL: postgres://user:password@localhost:5432/test_db
 
     steps:
       - name: Checkout code
@@ -47,6 +50,19 @@ jobs:
           python manage.py test
         working-directory: storisbro
 
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '14'
+
+      # - name: Install frontend dependencies
+      #   run: npm install
+      #   working-directory: frontend
+
+      # - name: Run frontend build
+      #   run: npm run build
+      #   working-directory: frontend
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -55,17 +71,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up SSH agent
-        run: |
-          eval "$(ssh-agent -s)"
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+      - name: Deploy to server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Deploy to server
-        run: |
-          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "cd $DEPLOY_PATH && git pull && source env/bin/activate && pip install -r storisbro/requirements.txt && python manage.py migrate && sudo systemctl restart gunicorn && sudo systemctl restart nginx"
-        env:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_IP: ${{ secrets.SERVER_HOST }}
           DEPLOY_PATH: /var/www/build
+        run: |
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "cd $DEPLOY_PATH && git pull && source env/bin/activate && pip install -r storisbro/requirements.txt && python manage.py migrate && sudo systemctl restart gunicorn && sudo systemctl restart nginx"
+
