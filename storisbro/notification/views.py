@@ -10,6 +10,7 @@ from authentication.serializers import UserSerializer
 from .serializers import NotificationSerializer
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.db.models import Q
  
 
 class SendNotificationView(APIView):
@@ -31,20 +32,23 @@ class NotificationMainAPIView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 class NotificationGetAPIView(APIView):
     def get(self, request, uid):
-        notification_model = Notification.objects.filter(user=uid).order_by('-created')
+        notification_model = Notification.objects.filter(
+            Q(user=uid) | Q(user__isnull=True)
+        ).order_by('-created')
         serializer = NotificationSerializer(notification_model, many=True)
         return Response(serializer.data)
-    
+
 
 class NotificationVKandEmail(APIView):
     def get(self, request, uid):
         notification_model = get_object_or_404(User, UID=uid)
         serializer = UserSerializer(notification_model)
         return Response(serializer.data)
+    
     
 class GetUsers(APIView):
     def get(self, request):
