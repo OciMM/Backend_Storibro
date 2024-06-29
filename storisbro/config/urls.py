@@ -28,13 +28,14 @@ from creatives.views import AddSingleCreativeAPIView, AddDoubleCreativeAPIView, 
     PK_AddDoubleCreativeAPIView, PK_RepostCreativeAPIView, PK_StickerCreativeAPIView, PK_DoubleStickerCreativeAPIView, \
     CreativeDetailAPIView, UserAllCreativesAPIView, UserAllCreativesDetailAPIView, UserCreativeDetailAPIView
 from reservation.views import DateOfReservationAPIView
-from authentication.views import UserAPIView, ChangeProfileData, AllEmailUsersAPIView 
+from authentication.views import UserAPIView, ChangeProfileData, AllEmailUsersAPIView, UserOneAPIView
 from statistics_for_admin_site.views import StatisticsAPIView
 
 urlpatterns = [
     path('api/admin/', admin.site.urls),
     path('api/', include(('authentication.urls', 'authentication'), namespace='authentication')),
     path('api/api_users/users', UserAPIView.as_view()),
+    path('api/api_users/user/<int:pk>', UserOneAPIView.as_view()),
     path('api/api_users/change_profile/<int:pk>', ChangeProfileData.as_view()),
     path('api/api_users/check_email', AllEmailUsersAPIView.as_view()),
     path('api/confirmation/', include('confirmation.urls')),

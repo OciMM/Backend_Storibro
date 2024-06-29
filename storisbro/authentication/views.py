@@ -45,6 +45,13 @@ class UserAPIView(APIView):
         user_model = User.objects.all()
         serializer = UserSerializer(user_model, many=True)
         return Response(serializer.data)
+    
+
+class UserOneAPIView(APIView):
+    def get(self, request, pk):
+        user_model = User.objects.get(pk)
+        serializer = UserSerializer(user_model)
+        return Response(serializer.data)
 
 
 class ObtainTokenView(TokenObtainPairView):
