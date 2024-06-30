@@ -49,7 +49,7 @@ class UserAPIView(APIView):
 
 class UserOneAPIView(APIView):
     def get(self, request, pk):
-        user_model = User.objects.get(pk)
+        user_model = User.objects.get(pk=pk)
         serializer = UserSerializer(user_model)
         return Response(serializer.data)
 
