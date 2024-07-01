@@ -28,7 +28,8 @@ from creatives.views import AddSingleCreativeAPIView, AddDoubleCreativeAPIView, 
     PK_AddDoubleCreativeAPIView, PK_RepostCreativeAPIView, PK_StickerCreativeAPIView, PK_DoubleStickerCreativeAPIView, \
     CreativeDetailAPIView, UserAllCreativesAPIView, UserAllCreativesDetailAPIView, UserCreativeDetailAPIView
 from reservation.views import DateOfReservationAPIView
-from authentication.views import UserAPIView, ChangeProfileData, AllEmailUsersAPIView, UserOneAPIView
+from authentication.views import UserAPIView, ChangeProfileData, AllEmailUsersAPIView, UserOneAPIView, \
+    BannedUserAPIView
 from statistics_for_admin_site.views import StatisticsAPIView
 
 urlpatterns = [
@@ -38,6 +39,7 @@ urlpatterns = [
     path('api/api_users/user/<int:pk>', UserOneAPIView.as_view()),
     path('api/api_users/change_profile/<int:pk>', ChangeProfileData.as_view()),
     path('api/api_users/check_email', AllEmailUsersAPIView.as_view()),
+    path('api/api_users/banned_user/<int:pk>', BannedUserAPIView.as_view()),
     path('api/confirmation/', include('confirmation.urls')),
     path('api/ref/', include('ref.urls')),
 

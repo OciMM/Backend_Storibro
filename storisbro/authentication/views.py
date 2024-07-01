@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
@@ -38,6 +38,12 @@ class Home(TemplateView):
 class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
+
+
+class BannedUserAPIView(UpdateAPIView):
+    """Блокирова пользователя"""
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class UserAPIView(APIView):
