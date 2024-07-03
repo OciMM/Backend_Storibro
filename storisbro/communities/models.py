@@ -25,6 +25,7 @@ class CommunityModel(models.Model):
         StatusCommunities,
         on_delete=models.PROTECT,
         default=1,
+        blank=True,
         verbose_name="Статус"
     )
 
