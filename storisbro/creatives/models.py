@@ -34,7 +34,7 @@ class AddSingleCreative(models.Model):
         verbose_name="Тип кнопки"
         )
     creative_type = models.CharField(max_length=100, default="AddSingleCreative", verbose_name="Тип креатива")
-    file = models.FileField(verbose_name="Файл для креатива", upload_to='files', null=True)
+    file = models.FileField(verbose_name="Файл для креатива", upload_to='files', blank=True, null=True)
     link = models.CharField(max_length=500, verbose_name="Ссылка")
     name = models.CharField(max_length=200, verbose_name="Название")
     date = models.DateField(verbose_name="Дата добавления креатива", auto_now_add=True, null=True)
