@@ -9,9 +9,9 @@ from rest_framework_simplejwt.tokens import AccessToken
 from django.conf import settings
 from authentication.models import User
 
-from .models import CommunityModel, Setting, CommunitySetting
+from .models import CommunityModel, Setting, CommunitySetting, StatusCommunities
 from authentication.models import User
-from .serializers import CommunityModelSerializer, CommunitySettingSerializer, CommunityAvailableForUser
+from .serializers import CommunityModelSerializer, CommunitySettingSerializer, CommunityAvailableForUser, StatusCommunitiesSerializer
 from .services import add_new_community_of_link, add_new_community_of_name, list_of_available_communities, get_int_id
 
 class CommunityModelAPIView(APIView):
@@ -84,6 +84,19 @@ class CommunityModelAPIView(APIView):
         
         return Response({'error': 'Группа не удовлетворяет условиям'}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class StatusCommunitiesAPIView(APIView):
+    def get(self, request):
+        status_model = StatusCommunities.objects.all()
+        serializer = StatusCommunitiesSerializer(status_model, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = StatusCommunitiesSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        
 
 class UserCommunityModelAPIView(APIView):
     def get(self, request, user):

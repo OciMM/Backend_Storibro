@@ -1,12 +1,18 @@
 from rest_framework import serializers
 
-from .models import CommunityModel, CommunitySetting
+from .models import CommunityModel, CommunitySetting, StatusCommunities
 from authentication.models import User
 
 
 class CommunityModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommunityModel
+        fields = '__all__'
+
+
+class StatusCommunitiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StatusCommunities
         fields = '__all__'
 
 

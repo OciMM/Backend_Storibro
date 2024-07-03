@@ -22,7 +22,8 @@ from django.conf.urls.static import static
 
 from commission.views import UpdatePublicModelStatusAPIView, low_commission
 from communities.views import CommunityModelAPIView, CommunitySettingAPIView, UpdateCommunitySettingAPIView, \
-    PK_CommunityModelAPIView, UserCommunityModelAPIView, UserSettingCommunityModelAPIView, AvailableCommunitiesAPIView
+    PK_CommunityModelAPIView, UserCommunityModelAPIView, UserSettingCommunityModelAPIView, AvailableCommunitiesAPIView, \
+    StatusCommunitiesAPIView
 from creatives.views import AddSingleCreativeAPIView, AddDoubleCreativeAPIView, RepostCreativeAPIView, \
     StickerCreativeAPIView, DoubleStickerCreativeAPIView, AllCreativesAPIView, PK_AddSingleCreativeAPIView, \
     PK_AddDoubleCreativeAPIView, PK_RepostCreativeAPIView, PK_StickerCreativeAPIView, PK_DoubleStickerCreativeAPIView, \
@@ -75,6 +76,7 @@ urlpatterns = [
     path('api/api_creatives/detail_user_creative/<int:user>/<str:creative_type>/<int:pk>', UserCreativeDetailAPIView.as_view()),    
 
     path('api/api_communities/communities', CommunityModelAPIView.as_view()),
+    path('api/api_communities/status_communities', StatusCommunitiesAPIView.as_view()),
     path('api/api_communities/available_publics/<int:user_id>', AvailableCommunitiesAPIView.as_view()),
     path('api/api_communities/own_communities/<int:user>', UserCommunityModelAPIView.as_view()),
     path('api/api_communities/settings_communities/<int:user>/<int:pk>', UserSettingCommunityModelAPIView.as_view()),
