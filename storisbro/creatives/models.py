@@ -31,6 +31,7 @@ class AddSingleCreative(models.Model):
         TypeButton,
         on_delete=models.CASCADE,
         default=1,
+        blank=True,
         verbose_name="Тип кнопки"
         )
     creative_type = models.CharField(max_length=100, default="AddSingleCreative", verbose_name="Тип креатива")
@@ -43,6 +44,7 @@ class AddSingleCreative(models.Model):
         StatusCreative,
         on_delete=models.PROTECT, 
         default=1,
+        blank=True,
         verbose_name="Статус проверки")
     
     archive = models.BooleanField(verbose_name='статус архива', default=False)
