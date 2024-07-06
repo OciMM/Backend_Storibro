@@ -15,7 +15,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 # Настройка логгера
 logging.basicConfig(level=logging.DEBUG)  # Установите уровень логгирования по вашему усмотрению
-
+token = "vk1.a.MaJjbRLRFk8WS_aZNXRNqQvNQUT7CrAQNv4uKfvjbmtnva_s6Zs4CnSehAEg0vkFYul0qlSa8RnMVE5zWbIvjg_lqfnG8ftvLgwKGyGm21Ncb_X_WEHnAh8YzpabLvSXUVn6Sdb2a1bJDPt5QdeeBjb_PImjjSRiSBPphG4-6OYWGaYX2D1T3WruTVqkZdFmzOqkwL_fjh7qrBankrD_Lw"
 # Получение логгера для текущего модуля
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class AddSingleCreativeAPIView(APIView):
         if not link:
             return Response({'error': 'Отсутствует URL'}, status=status.HTTP_400_BAD_REQUEST)
 
-        checked_link = check_link_for_story(link)
+        checked_link = check_link_for_story(url=link, token=token)
         if not checked_link:
             return Response({'error': 'Некорректная или нерабочая ссылка'}, status=status.HTTP_400_BAD_REQUEST)
 
