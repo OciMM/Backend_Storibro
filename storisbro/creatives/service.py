@@ -1,6 +1,6 @@
 import vk_api
 import requests
-
+from urllib.parse import urlparse
 import os
 
 token = "vk1.a.MaJjbRLRFk8WS_aZNXRNqQvNQUT7CrAQNv4uKfvjbmtnva_s6Zs4CnSehAEg0vkFYul0qlSa8RnMVE5zWbIvjg_lqfnG8ftvLgwKGyGm21Ncb_X_WEHnAh8YzpabLvSXUVn6Sdb2a1bJDPt5QdeeBjb_PImjjSRiSBPphG4-6OYWGaYX2D1T3WruTVqkZdFmzOqkwL_fjh7qrBankrD_Lw"
@@ -8,34 +8,30 @@ token = "vk1.a.MaJjbRLRFk8WS_aZNXRNqQvNQUT7CrAQNv4uKfvjbmtnva_s6Zs4CnSehAEg0vkFY
 my_token = "vk1.a.gIvmwaD-fhiybbPFlByHq7SVYwI4YTp8nd0_ogRz5wiM4PjWF9NAbizaVfXhcj6mWEVIRNEIB62AgR2bCmgW5FOkwwrbRkIeNm0Wlgmq9K2KYuO1cCeY8QtNVYiggtOtzLifu2SMRfLX4iuADp8NjViSoGGR6Dg5TGwYWUzIgFLjXmbqb80zOLnTmwzhvUtv9EqgHPvEECC7qyv1Iqi-4w"
 
 # Проверка ссылки
-def check_link_for_story(url):
+def check_link_for_story(url, token):
     session = vk_api.VkApi(token=token)
     vk = session.get_api()
 
     try:
         response = requests.get(url)
         if response.status_code == 200:
-
-            try:
-                correct_url = url.split(".")[0]
-                
-                if correct_url == "https://vk":
-                    print(f"Ссылка {url} прошла проверку!")
-                    return url
-                
-                elif correct_url != "https://vk":
+            parsed_url = urlparse(url)
+            
+            if "vk.com" in parsed_url.netloc:
+                print(f"Ссылка {url} прошла проверку!")
+                return url
+            else:
+                try:
                     fix_url = vk.utils.getShortLink(url=url)
                     short_link = fix_url['short_url']
                     print(f"Ссылка {url} была из сторонних источников, но мы ее сделали корректной! Вот ссылка - {short_link}")
                     return short_link
-                
-                else:
-                    print("Что-то пошло не так :(")
+                except vk_api.VkApiError as e:
+                    print(f"Проверка не получилась, вот ошибка: {e}")
                     return False
-            except vk_api.VkApiError as e:
-                print(f"Проверка не получилась, вот ошибка: {e}")
-                return False
-    
+        else:
+            print(f"Ошибка при проверке ссылки: {response.status_code}")
+            return False
     except requests.RequestException as e:
         print(f"Ошибка при проверке ссылки: {e}")
         return False
