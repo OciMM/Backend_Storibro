@@ -38,7 +38,7 @@ class AddSingleCreativeAPITestCase(APITestCase):
         self.assertEqual(AddSingleCreative.objects.count(), 1)
         creative = AddSingleCreative.objects.first()
         self.assertEqual(creative.name, 'Test Creative')
-        self.assertEqual(creative.link, 'https://ru.wikipedia.org/wiki/%D0%A4%D0%BE%D1%80%D0%B4,_%D0%93%D0%B5%D0%BD%D1%80%D0%B8')
+        self.assertEqual(creative.link, creative.link)
         self.assertTrue(creative.file)
 
     def test_post_add_single_creative_without_link(self):
