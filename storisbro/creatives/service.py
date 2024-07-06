@@ -17,7 +17,8 @@ def check_link_for_story(url, token):
         if response.status_code == 200:
             parsed_url = urlparse(url)
             
-            if "vk.com" in parsed_url.netloc:
+            # Проверяем, что домен содержит vk.com
+            if 'vk.com' in parsed_url.netloc:
                 print(f"Ссылка {url} прошла проверку!")
                 return url
             else:
