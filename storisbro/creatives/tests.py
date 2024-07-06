@@ -12,14 +12,13 @@ class AddSingleCreativeAPITestCase(APITestCase):
     def setUp(self):
         self.url = reverse('addsinglecreative')  # Убедитесь, что у вас есть правильный URL
         self.user = User.objects.create_user(
-            username='testuser', 
             email='test123@gmail.com', 
             password='testpassword'
         )
         self.button_type = TypeButton.objects.create(name_button="Test Button")
         self.status = StatusCreative.objects.create(status="Test Status")
         
-        self.client.login(username='testuser', password='testpassword')
+        self.client.login(email='test123@gmail.com', password='testpassword')
 
     def test_post_add_single_creative(self):
         # Создаем фейковый файл для загрузки
