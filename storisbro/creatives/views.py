@@ -13,11 +13,8 @@ from django.db import transaction
 import logging
 from rest_framework.parsers import MultiPartParser, FormParser
 
-# Настройка логгера
-logging.basicConfig(level=logging.DEBUG)  # Установите уровень логгирования по вашему усмотрению
+
 token = "vk1.a.ajlwaqRZeEgOfznuUVqmjJI4D2-luGPdCJlwT1JxTPDxn2pvfjTdvG84PrsM_J30mQqWK5VXKPxHpnr7c2PqzgbPCd_aeyVI-gAmUBVoX_1qi6Vet3hH-CXwWV4axHpgJgKmD87N9vqBY37h-LRX2j8qOl4ctQ4Fm4M7XYF3VOIW18wdMFdz-qdZgo61v7rJ5nH3I6hchHWNQTlFcKD5IQ"
-# Получение логгера для текущего модуля
-logger = logging.getLogger(__name__)
 
 class AddSingleCreativeAPIView(APIView):
     """Одиночный креатив и его проверка"""
