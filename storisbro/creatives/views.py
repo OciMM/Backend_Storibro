@@ -40,14 +40,11 @@ class AddSingleCreativeAPIView(APIView):
         
         # Дополните данные 'link' после проверки
         other_data['link'] = checked_link
-        print(other_data['file'])
-        try:
-            serializer = AddSingleCreativeSerializer(data=other_data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        except Exception as e:
-            print(e)
+
+        serializer = AddSingleCreativeSerializer(data=other_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.data)
     def patch(self, request, pk):
