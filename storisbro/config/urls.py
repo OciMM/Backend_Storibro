@@ -54,7 +54,7 @@ urlpatterns = [
     path('api/api_reservation/reservations', DateOfReservationAPIView.as_view()),
     # path('api_reservation/creatives/<int:pk>', ImportPKCreativeModelAPIView.as_view()),
     
-    path('api/api_creatives/add_single_creative', AddSingleCreativeAPIView.as_view()),
+    path('api/api_creatives/add_single_creative', AddSingleCreativeAPIView.as_view(), name='addsinglecreative'),
     path('api/api_creatives/add_single_creative/<int:pk>', PK_AddSingleCreativeAPIView.as_view()),
 
     path('api/api_creatives/add_double_creative', AddDoubleCreativeAPIView.as_view()),
