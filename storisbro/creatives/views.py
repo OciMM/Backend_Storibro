@@ -46,7 +46,7 @@ class AddSingleCreativeAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response(serializer.data)
+        # return Response(serializer.data)
     def patch(self, request, pk):
         try:
             creative_model = AddSingleCreative.objects.get(pk=pk)
