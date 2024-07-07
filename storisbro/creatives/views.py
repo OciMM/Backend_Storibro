@@ -10,7 +10,6 @@ from reservation.models import DateOfReservation
 
 from .service import check_link_for_story, check_size_file, check_is_story
 from django.db import transaction
-import logging
 from rest_framework.parsers import MultiPartParser, FormParser
 
 
