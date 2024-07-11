@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
 from django.urls import reverse
-from .models import AddSingleCreative, TypeButton, StatusCreative
+from .models import AddSingleCreative, RepostCreative, TypeButton, StatusCreative
 from django.contrib.auth import get_user_model
 from io import BytesIO
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -55,3 +55,39 @@ class AddSingleCreativeAPITestCase(APITestCase):
         response = self.client.post(self.url, data, format='multipart')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(AddSingleCreative.objects.count(), 0)
+
+
+class RepostCreativeAPITestCase(APITestCase):
+    def setUp(self):
+        self.url = reverse('repostcreative')  # Убедитесь, что у вас есть правильный URL
+        self.user = User.objects.create_user(
+            email='test123@gmail.com',
+            password='testpassword'
+        )
+        self.status = StatusCreative.objects.create(status="Test Status")
+        
+        self.client.login(email='test123@gmail.com', password='testpassword')
+
+    def test_post_repost_creative(self):
+        data = {
+            'name': 'Test Repost',
+            'link_of_story': 'https://example.com/story/123',
+            'status': self.status.id
+        }
+
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(RepostCreative.objects.count(), 1)
+        creative = RepostCreative.objects.first()
+        self.assertEqual(creative.name, 'Test Repost')
+        self.assertEqual(creative.link_of_story, 'https://example.com/story/123')
+
+    def test_post_repost_creative_without_link(self):
+        data = {
+            'name': 'Test Repost',
+            'status': self.status.id
+        }
+
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(RepostCreative.objects.count(), 0)
