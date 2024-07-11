@@ -57,11 +57,13 @@ class AddSingleCreativeAPITestCase(APITestCase):
         self.assertEqual(AddSingleCreative.objects.count(), 0)
 
 
+User = get_user_model()
+
 class RepostCreativeAPITestCase(APITestCase):
     def setUp(self):
         self.url = reverse('repostcreative')  # Убедитесь, что у вас есть правильный URL
         self.user = User.objects.create_user(
-            email='test123@gmail.com',
+            email='test123@gmail.com', 
             password='testpassword'
         )
         self.status = StatusCreative.objects.create(status="Test Status")
@@ -71,7 +73,7 @@ class RepostCreativeAPITestCase(APITestCase):
     def test_post_repost_creative(self):
         data = {
             'name': 'Test Repost',
-            'link_of_story': 'https://example.com/story/123',
+            'link_of_story': 'https://vk.com/story-123456_654321',
             'status': self.status.id
         }
 
@@ -80,9 +82,9 @@ class RepostCreativeAPITestCase(APITestCase):
         self.assertEqual(RepostCreative.objects.count(), 1)
         creative = RepostCreative.objects.first()
         self.assertEqual(creative.name, 'Test Repost')
-        self.assertEqual(creative.link_of_story, 'https://example.com/story/123')
+        self.assertEqual(creative.link_of_story, 'https://vk.com/story-123456_654321')
 
-    def test_post_repost_creative_without_link(self):
+    def test_post_repost_creative_without_link_of_story(self):
         data = {
             'name': 'Test Repost',
             'status': self.status.id

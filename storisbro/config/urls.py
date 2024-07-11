@@ -60,7 +60,7 @@ urlpatterns = [
     path('api/api_creatives/add_double_creative', AddDoubleCreativeAPIView.as_view()),
     path('api/api_creatives/add_double_creative/<int:pk>', PK_AddDoubleCreativeAPIView.as_view()),
 
-    path('api/api_creatives/add_repost_creative', RepostCreativeAPIView.as_view()),
+    path('api/api_creatives/add_repost_creative', RepostCreativeAPIView.as_view(), name='repostcreative'),
     path('api/api_creatives/add_repost_creative/<int:pk>', PK_RepostCreativeAPIView.as_view()),
 
     path('api/api_creatives/add_sticker_creative', StickerCreativeAPIView.as_view()),
