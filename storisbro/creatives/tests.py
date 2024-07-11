@@ -73,7 +73,7 @@ class RepostCreativeAPITestCase(APITestCase):
     def test_post_repost_creative(self):
         data = {
             'name': 'Test Repost',
-            'link_of_story': 'https://vk.com/story-123456_654321',
+            'link_of_story': '523037954_456239155',
             'status': self.status.id
         }
 
@@ -82,7 +82,7 @@ class RepostCreativeAPITestCase(APITestCase):
         self.assertEqual(RepostCreative.objects.count(), 1)
         creative = RepostCreative.objects.first()
         self.assertEqual(creative.name, 'Test Repost')
-        self.assertEqual(creative.link_of_story, 'https://vk.com/story-123456_654321')
+        self.assertEqual(creative.link_of_story, '523037954_456239155')
 
     def test_post_repost_creative_without_link_of_story(self):
         data = {
