@@ -57,8 +57,6 @@ class AddSingleCreativeAPITestCase(APITestCase):
         self.assertEqual(AddSingleCreative.objects.count(), 0)
 
 
-User = get_user_model()
-
 class RepostCreativeAPITestCase(APITestCase):
     def setUp(self):
         self.url = reverse('repostcreative')  # Убедитесь, что у вас есть правильный URL

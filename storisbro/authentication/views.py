@@ -58,6 +58,14 @@ class UserOneAPIView(APIView):
         user_model = User.objects.get(pk=pk)
         serializer = UserSerializer(user_model)
         return Response(serializer.data)
+    
+
+class SearchEmail(APIView):
+    """Запрос для проверки или поиска email"""
+    def get(self, request, email):
+        user_model = User.objects.get(email=email)
+        serializer = UserSerializer(user_model)
+        return Response(serializer.data)
 
 
 class ObtainTokenView(TokenObtainPairView):
