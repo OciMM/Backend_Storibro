@@ -17,7 +17,7 @@ urlpatterns = [
     path('social-auth/', include('social_django.urls', namespace='social')),
     path('home/', Home.as_view(), name='home'),
 
-    path('check_email/', SearchEmail.as_view()),
+    path('check_email/<str:email>/', SearchEmail.as_view()),
     path('change_email/<str:email>/', email_change_code_func),
     path('change_email/<str:email>/<str:new_email>/<str:confirmation_code>/', change_email_func)
 ]
