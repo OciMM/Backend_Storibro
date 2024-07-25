@@ -232,23 +232,6 @@ AUTH_USER_MODEL = 'authentication.User'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'console': {
-#             'level': 'INFO',
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'loggers': {
-#         '': {
-#             'handlers': ['console'],
-#             'level': 'INFO',
-#             'propagate': True,
-#         },
-#     },
-# }
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
@@ -260,18 +243,3 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': 'django.log',
-#         },
-#     },
-#     'root': {
-#         'handlers': ['file'],
-#         'level': 'DEBUG',
-#     },
-# }

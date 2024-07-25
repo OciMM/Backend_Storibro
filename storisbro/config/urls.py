@@ -80,7 +80,7 @@ urlpatterns = [
     path('api/api_communities/available_publics/<int:user_id>', AvailableCommunitiesAPIView.as_view()),
     path('api/api_communities/own_communities/<int:user>', UserCommunityModelAPIView.as_view()),
     path('api/api_communities/settings_communities/<int:user>/<int:pk>', UserSettingCommunityModelAPIView.as_view()),
-    path('api/api_communities/communities/<int:pk>', PK_CommunityModelAPIView.as_view()),
+    path('api/api_communities/communities/<int:pk>/', PK_CommunityModelAPIView.as_view()),
     path('api/api_communities/communities/community_setting', CommunitySettingAPIView.as_view()),
     path('api/api_communities/communities/community_setting/<int:pk>', UpdateCommunitySettingAPIView.as_view()),
     path('api/api_communities/communities/check_all/<int:user_id>', low_commission),
@@ -89,6 +89,7 @@ urlpatterns = [
     path('api/api_admin/statistics/<str:start_date>/<str:end_date>/', StatisticsAPIView.as_view()),
 ]
 
-
+ 
+ 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
