@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-7e&-018k=u9(&f+jigz43tcieu=)-%nc(x3s2iv!gt4272+v$0"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -112,9 +112,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'storisbro_main_db',
-        'USER': 'main_login_db',
-        'PASSWORD': 'yIuHxg9qBU55',
+        'NAME': os.getenv('NAME_DB'),
+        'USER': os.getenv('USER_DB'),
+        'PASSWORD': os.getenv('PASSWORD_DB'),
         'HOST': 'localhost',
         'PORT': 5432
     }
@@ -199,8 +199,8 @@ REDIS_DB = 0
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'bekasovmaks20@gmail.com'  # Замените на свой адрес электронной почты Gmail
-EMAIL_HOST_PASSWORD = 'jhwy sfwp efkj qdjz'  # Укажите пароль от вашего Gmail аккаунта
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')  # Замените на свой адрес электронной почты Gmail
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')  # Укажите пароль от вашего Gmail аккаунта
 EMAIL_USE_TLS = True
 
 # Internationalization

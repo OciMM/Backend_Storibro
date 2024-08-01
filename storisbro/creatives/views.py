@@ -11,9 +11,9 @@ from reservation.models import DateOfReservation
 from .service import check_link_for_story, check_size_file, check_is_story
 from django.db import transaction
 from rest_framework.parsers import MultiPartParser, FormParser
+import os
 
-
-token = "vk1.a.ajlwaqRZeEgOfznuUVqmjJI4D2-luGPdCJlwT1JxTPDxn2pvfjTdvG84PrsM_J30mQqWK5VXKPxHpnr7c2PqzgbPCd_aeyVI-gAmUBVoX_1qi6Vet3hH-CXwWV4axHpgJgKmD87N9vqBY37h-LRX2j8qOl4ctQ4Fm4M7XYF3VOIW18wdMFdz-qdZgo61v7rJ5nH3I6hchHWNQTlFcKD5IQ"
+token = os.getenv('TOKEN_USER')
 
 class AddSingleCreativeAPIView(APIView):
     """Одиночный креатив и его проверка"""
