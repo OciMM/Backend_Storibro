@@ -13,7 +13,7 @@ from django.db import transaction
 from rest_framework.parsers import MultiPartParser, FormParser
 import os
 
-token = os.getenv('TOKEN_USER')
+token = "vk1.a.BNQK2sS-V-v6zTcG3jkaMukykB5J_xNqfouuzglA5N_MLdJ0I9WYzFw019GdU3UCaucVb8aJX87g5gA4qZQ0cHoFkfPhVdBjXknxvoj6C7JsZbc3SO8_LUvJTut61WBCXrSYgO-dyhwzYik31wdVSl3LAD4dC_x7_hwVVSphU8HcJLTolC9AyKQixAIadphbgoZUeUQDwbsgRUUL9tz9Fg"
 
 class AddSingleCreativeAPIView(APIView):
     """Одиночный креатив и его проверка"""

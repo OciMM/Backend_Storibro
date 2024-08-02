@@ -1,7 +1,7 @@
 import vk_api
 import os
  
-token = os.getenv('TOKEN_USER')
+token = "vk1.a.BNQK2sS-V-v6zTcG3jkaMukykB5J_xNqfouuzglA5N_MLdJ0I9WYzFw019GdU3UCaucVb8aJX87g5gA4qZQ0cHoFkfPhVdBjXknxvoj6C7JsZbc3SO8_LUvJTut61WBCXrSYgO-dyhwzYik31wdVSl3LAD4dC_x7_hwVVSphU8HcJLTolC9AyKQixAIadphbgoZUeUQDwbsgRUUL9tz9Fg"
 
 def check_link_in_community(community_name, link_to_check):
 
