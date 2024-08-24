@@ -28,17 +28,17 @@ SECRET_KEY = "django-insecure-7e&-018k=u9(&f+jigz43tcieu=)-%nc(x3s2iv!gt4272+v$0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['31.129.96.225', "127.0.0.1", 'https://storisbro.com/']
+ALLOWED_HOSTS = ['31.129.96.225', "127.0.0.1", 'https://storisbro.com']
 
 # Для связи с фронтендом
 CORS_ALLOWED_ORIGINS = [
     'http://31.129.96.225',
     'http://62.113.96.70',
-    'https://storisbro.com/'
+    'https://storisbro.com'
 ]
 
 # settings.py
-CSRF_TRUSTED_ORIGINS = ['https://storisbro.com/']
+CSRF_TRUSTED_ORIGINS = ['https://storisbro.com']
 
 
 CORS_ALLOW_CREDENTIALS = True
