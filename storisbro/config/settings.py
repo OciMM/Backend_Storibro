@@ -156,7 +156,7 @@ CSRF_COOKIE_SECURE = False
 
 # Настройки vk
 SOCIAL_AUTH_VK_OAUTH2_KEY = 'Qm3t9YBP2OPGJUiiTUEZ'
-SOCIAL_AUTH_VK_OAUTH2_SECRET = 'ac10c219ac10c219ac10c219d3af06f0d0aac10ac10c219c9571a56d29011a40e85b08a'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = '89ead28089ead28089ead280b28afce049889ea89ead280ef3bb844ed72785b0188f27c'
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 LOGIN_URL = 'https://storisbro.com/auth'  # URL для страницы входа
 LOGIN_REDIRECT_URL = 'https://storisbro.com/auth'  # URL для перенаправления после успешного входа
