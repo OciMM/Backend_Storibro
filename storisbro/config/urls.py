@@ -30,7 +30,7 @@ from creatives.views import AddSingleCreativeAPIView, AddDoubleCreativeAPIView, 
     CreativeDetailAPIView, UserAllCreativesAPIView, UserAllCreativesDetailAPIView, UserCreativeDetailAPIView
 from reservation.views import DateOfReservationAPIView
 from authentication.views import UserAPIView, ChangeProfileData, AllEmailUsersAPIView, UserOneAPIView, \
-    BannedUserAPIView
+    BannedUserAPIView, VKAuthView
 from statistics_for_admin_site.views import StatisticsAPIView
 
 urlpatterns = [
@@ -43,6 +43,7 @@ urlpatterns = [
     path('api/api_users/banned_user/<int:pk>', BannedUserAPIView.as_view()),
     path('api/confirmation/', include('confirmation.urls')),
     path('api/ref/', include('ref.urls')),
+    path('auth/vk/', VKAuthView.as_view(), name='vk_auth'),
 
     # path('api/change_email/<str:email>/<str:new_email>/<str:confirmation_code>/', confirmation_change_email),
 

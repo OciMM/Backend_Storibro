@@ -21,6 +21,7 @@ from rest_framework import exceptions
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
+import requests
 
 import random
 import string
@@ -246,4 +247,38 @@ def confirm_code_change_password(request, email, new_password, confirmation_code
         return JsonResponse({'message': 'Пароля успешно изменен.'}, status=status.HTTP_200_OK)
     else:
         return JsonResponse({'error': 'Ошибка при смене пароля.'}, status=status.HTTP_401_UNAUTHORIZED)
-    
+
+
+class VKAuthView(APIView):
+    def post(self, request, *args, **kwargs):
+        code = request.data.get('code')
+        if not code:
+            return Response({'error': 'Code not provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Параметры для обмена кода на access_token
+        params = {
+            'client_id': settings.SOCIAL_AUTH_VK_OAUTH2_KEY,
+            'client_secret': settings.SOCIAL_AUTH_VK_OAUTH2_SECRET,
+            'redirect_uri': settings.LOGIN_REDIRECT_URL,
+            'code': code,
+        }
+
+        # Запрос на обмен кода на токен
+        response = requests.get('https://oauth.vk.com/access_token', params=params)
+
+        if response.status_code == 200:
+            data = response.json()
+            access_token = data.get('access_token')
+            refresh_token = data.get('refresh_token')
+            user_id = data.get('user_id')
+            vk_id = user_id
+
+            # Возвращаем данные клиенту
+            return Response({
+                'access_token': access_token,
+                'refresh_token': refresh_token,
+                'user_id': user_id,
+                'vk_id': vk_id
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Failed to exchange code for token'}, status=response.status_code)
