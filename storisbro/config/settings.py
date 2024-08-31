@@ -158,8 +158,8 @@ CSRF_COOKIE_SECURE = False
 SOCIAL_AUTH_VK_OAUTH2_KEY = 'Qm3t9YBP2OPGJUiiTUEZ'
 SOCIAL_AUTH_VK_OAUTH2_SECRET = '89ead28089ead28089ead280b28afce049889ea89ead280ef3bb844ed72785b0188f27c'
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
-LOGIN_URL = 'https://storisbro.com/auth'  # URL для страницы входа
-LOGIN_REDIRECT_URL = 'https://storisbro.com/auth'  # URL для перенаправления после успешного входа
+LOGIN_URL = 'https://storisbro.com/'  # URL для страницы входа
+LOGIN_REDIRECT_URL = 'https://storisbro.com/admin'  # URL для перенаправления после успешного входа
 
 SOCIAL_AUTH_URL_NAMESPACE = 'authentication:social'
 
