@@ -252,8 +252,11 @@ def confirm_code_change_password(request, email, new_password, confirmation_code
 class VKAuthView(APIView):
     def post(self, request, *args, **kwargs):
         code = request.data.get('code')
-        if not code:
-            return Response({'error': 'Code not provided'}, status=status.HTTP_400_BAD_REQUEST)
+        code_verifier = request.data.get('code_verifier')
+        device_id = request.data.get('device_id')
+
+        if not code or not code_verifier or not device_id:
+            return Response({'error': 'Required parameters are missing'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Параметры для обмена кода на access_token
         params = {
@@ -261,10 +264,12 @@ class VKAuthView(APIView):
             'client_secret': settings.SOCIAL_AUTH_VK_OAUTH2_SECRET,
             'redirect_uri': settings.LOGIN_REDIRECT_URL,
             'code': code,
+            'code_verifier': code_verifier,  # Передаем code_verifier
+            'device_id': device_id,  # Передаем device_id
         }
 
         # Запрос на обмен кода на токен
-        response = requests.get('https://oauth.vk.com/access_token', params=params)
+        response = requests.post('https://id.vk.com/oauth2/auth', data=params)
 
         if response.status_code == 200:
             data = response.json()
@@ -281,4 +286,4 @@ class VKAuthView(APIView):
                 'vk_id': vk_id
             }, status=status.HTTP_200_OK)
         else:
-            return Response({'error': 'Failed to exchange code for token'}, status=response.status_code)
+            return Response({'error': 'Failed to exchange code for token', 'details': response.text}, status=response.status_code)
