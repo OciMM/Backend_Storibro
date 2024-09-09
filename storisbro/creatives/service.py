@@ -3,8 +3,8 @@ import requests
 from urllib.parse import urlparse
 import os
 
-token = "vk1.a.BNQK2sS-V-v6zTcG3jkaMukykB5J_xNqfouuzglA5N_MLdJ0I9WYzFw019GdU3UCaucVb8aJX87g5gA4qZQ0cHoFkfPhVdBjXknxvoj6C7JsZbc3SO8_LUvJTut61WBCXrSYgO-dyhwzYik31wdVSl3LAD4dC_x7_hwVVSphU8HcJLTolC9AyKQixAIadphbgoZUeUQDwbsgRUUL9tz9Fg"
-my_token="vk1.a.P8zJ9Yb8YYGO9SkEDMfTKXf9nB7Bv-xUinzEZ3Cdv1Hxqy62I07yXgf84EGtKq4kk4mqbMKFQMROBUOQOuuuK7xFjVlCDmgKcaLuxdE48CQjNHiozcKJv5gp3ZnYE0fh74qlEEaDpqpm5qMQYWVHBH3PmUZNYkeRJ-4B7NtkgDr_-E1CN0hlR2magaO8nylCvEb1WGx6VB5SFX7cAntYGg"
+token = "Токен пользователя"
+my_token="Токен группы"
 
 # Проверка ссылки
 def check_link_for_story(url, token):
